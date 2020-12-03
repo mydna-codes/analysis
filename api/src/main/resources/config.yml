@@ -38,7 +38,7 @@ kumuluzee:
     enabled: true
     liquibase:
       datasources:
-        - jndi-name: jdbc/sequence-bank-db
+        - jndi-name: jdbc/analysis-db
           changelog: db/db.changelog-master.xml
           startup:
             dropAll: false
