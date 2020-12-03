@@ -1,0 +1,7 @@
+environments:
+  dev:
+    suffix: "-test"
+    namespace: mydnacodes
+  prod:
+    suffix: ""
+    namespace: mydnacodes-prod
