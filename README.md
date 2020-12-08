@@ -1,5 +1,7 @@
 # analysis
 
+[![Build Status](https://jenkins.din-cloud.com/buildStatus/icon?job=mydnacodes%2Fanalysis%2Fmaster)](https://jenkins.din-cloud.com/job/mydnacodes/job/analysis/job/master/)
+
 ### Library
 ```xml
 <dependency>
