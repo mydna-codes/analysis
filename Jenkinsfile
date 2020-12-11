@@ -116,6 +116,7 @@ pipeline {
                         }
                     } catch (Exception e) {
                         echo "Deployment has not been scaled."
+                        echo err.getMessage();
                     }
                 }
                 withKubeConfig([credentialsId: KUBERNETES_CREDENTIALS]) {
