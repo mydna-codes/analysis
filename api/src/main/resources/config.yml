@@ -17,6 +17,10 @@ kumuluzee:
     enabled: true
     ui:
       enabled: true
+  health:
+    servlet:
+      mapping: /health/
+      enabled: true
   grpc:
     clients:
       - name: sequence-bank-grpc-client
