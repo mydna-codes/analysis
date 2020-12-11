@@ -6,7 +6,8 @@ kumuluzee:
     name: dev
   server:
     show-server-info: false
-    base-url: http://localhost:8080
+    http:
+      port: 8090
   cors-filter:
     servlet:
       allow-origin: "*"
@@ -16,30 +17,8 @@ kumuluzee:
     enabled: true
     ui:
       enabled: true
-  health:
-    servlet:
-      mapping: /health/
-      enabled: true
-    checks:
-      data-source-health-check:
-        type: liveness
-        jndi-name: jdbc/analysis-db
-      disk-space-health-check:
-        threshold: 100000000
-        type: liveness
-  datasources:
-    - jndi-name: jdbc/analysis-db
-      connection-url: jdbc:postgresql://localhost:5432/analysis
-      username: postgres
-      password: postgres
-      pool:
-        max-size: 20
-  migrations:
-    enabled: true
-    liquibase:
-      datasources:
-        - jndi-name: jdbc/analysis-db
-          changelog: db/db.changelog-master.xml
-          startup:
-            dropAll: false
-            update: true
+  grpc:
+    clients:
+      - name: sequence-bank-grpc-client
+        port: 8081
+        address: localhost

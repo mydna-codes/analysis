@@ -9,10 +9,10 @@ pipeline {
         DOCKER_CREDENTIALS     = "mydnacodes-docker-user"
         // Local variables
         DOCKER_IMAGE_TAG       = "mydnacodes/analysis"
-        DOCKER_IMAGE_VERSION   = ""
         DOCKER_IMAGE           = ""
         COMMIT_AUTHOR          = ""
         COMMIT_MESSAGE         = ""
+        PROJECT_VERSION        = ""
     }
 
     tools {
@@ -25,7 +25,7 @@ pipeline {
             steps {
                 script {
                     pom                  = readMavenPom file:"pom.xml"
-                    DOCKER_IMAGE_VERSION = pom.version
+                    PROJECT_VERSION      = pom.version
                     COMMIT_MESSAGE       = sh script: "git show -s --pretty='%s'", returnStdout: true
                     COMMIT_AUTHOR        = sh script: "git show -s --pretty='%cn <%ce>'", returnStdout: true
                     COMMIT_AUTHOR        = COMMIT_AUTHOR.trim()
@@ -48,7 +48,7 @@ pipeline {
             steps {
                 script {
                     docker.withRegistry("", DOCKER_CREDENTIALS) {
-                        dockerImage.push("$DOCKER_IMAGE_VERSION")
+                        dockerImage.push("$PROJECT_VERSION")
                         dockerImage.push("latest")
                     }
                 }
@@ -56,7 +56,7 @@ pipeline {
         }
         stage("Clean docker images") {
             steps {
-                sh "docker rmi $DOCKER_IMAGE_TAG:$DOCKER_IMAGE_VERSION"
+                sh "docker rmi $DOCKER_IMAGE_TAG:$PROJECT_VERSION"
                 sh "docker rmi $DOCKER_IMAGE_TAG:latest"
             }
         }
@@ -85,9 +85,12 @@ pipeline {
                     }
 
                     sh """ \
-                    sed -e 's+{{IMAGE_NAME}}+$DOCKER_IMAGE_TAG:$DOCKER_IMAGE_VERSION+g' \
+                    sed -e 's+{{IMAGE_NAME}}+$DOCKER_IMAGE_TAG:$PROJECT_VERSION+g' \
                         -e 's+{{NAMESPACE}}+$environment.namespace+g' \
                         -e 's+{{ENV_SUFFIX}}+$environment.suffix+g' \
+                        -e 's+{{VERSION}}+$PROJECT_VERSION+g' \
+                        -e 's+{{ENV_NAME}}+$environment.name+g' \
+                        -e 's+{{ENV_PROD}}+$environment.prod+g' \
                         .kube/analysis.yaml > .kube/analysis.tmp
                     """
                     sh "mv -f .kube/analysis.tmp .kube/analysis.yaml"
@@ -102,7 +105,15 @@ pipeline {
         }
         stage("Deploy application") {
             steps {
-
+                script {
+                    if (!(env.GIT_BRANCH.equals("prod") || env.GIT_BRANCH.equals("origin/prod"))) {
+                        // Temporary - force new image pull - dev only
+                        withKubeConfig([credentialsId: KUBERNETES_CREDENTIALS]) {
+                            sh "kubectl scale --replicas=0 deployment analysis-app -n mydnacodes"
+                            sh "kubectl scale --replicas=1 deployment analysis-app -n mydnacodes"
+                        }
+                    }
+                }
                 withKubeConfig([credentialsId: KUBERNETES_CREDENTIALS]) {
                     sh "kubectl apply -f .kube/"
                 }

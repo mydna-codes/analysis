@@ -23,12 +23,15 @@
         <kumuluzee-cors.version>1.0.6</kumuluzee-cors.version>
         <kumuluzee-security.version>1.2.0</kumuluzee-security.version>
         <kumuluzee-health.version>2.3.0</kumuluzee-health.version>
+        <kumuluzee-grpc.version>1.1.0</kumuluzee-grpc.version>
 
         <!-- PostgreSQL-->
         <postgresql.version>42.2.18</postgresql.version>
 
         <!-- mydnacodes -->
         <mydnacodes-rest-lib.version>1.0.0-SNAPSHOT</mydnacodes-rest-lib.version>
+        <mydnacodes-sequence-bank-lib.version>1.0.0-SNAPSHOT</mydnacodes-sequence-bank-lib.version>
+
     </properties>
 
     <dependencyManagement>
@@ -87,6 +90,13 @@
                 <version>${kumuluzee-cors.version}</version>
             </dependency>
 
+            <!-- KumuluzEE (gRPC) -->
+            <dependency>
+                <groupId>com.kumuluz.ee.grpc</groupId>
+                <artifactId>kumuluzee-grpc</artifactId>
+                <version>${kumuluzee-grpc.version}</version>
+            </dependency>
+
             <!-- KumuluzEE (Liquibase) -->
             <dependency>
                 <groupId>com.kumuluz.ee.migrations</groupId>
@@ -119,6 +129,11 @@
                 <artifactId>rest-lib</artifactId>
                 <version>${mydnacodes-rest-lib.version}</version>
             </dependency>
+            <dependency>
+                <groupId>codes.mydna</groupId>
+                <artifactId>sequence-bank-lib-v1</artifactId>
+                <version>${mydnacodes-sequence-bank-lib.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -138,7 +153,6 @@
             <modules>
                 <module>api</module>
                 <module>business-logic</module>
-                <module>entities</module>
                 <module>lib</module>
             </modules>
         </profile>

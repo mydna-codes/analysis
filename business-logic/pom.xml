@@ -51,6 +51,10 @@
 
         <dependency>
             <groupId>codes.mydna</groupId>
+            <artifactId>sequence-bank-lib-v1</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>codes.mydna</groupId>
             <artifactId>rest-lib</artifactId>
         </dependency>
     </dependencies>
