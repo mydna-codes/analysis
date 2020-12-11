@@ -116,11 +116,12 @@ pipeline {
                         }
                     } catch (Exception e) {
                         echo "Deployment has not been scaled."
-                        echo err.getMessage();
+                        echo e.getMessage()
                     }
                 }
                 withKubeConfig([credentialsId: KUBERNETES_CREDENTIALS]) {
-                    sh "kubectl apply -f .kube/"
+                    // sh "kubectl apply -f .kube/"
+                    sh "kubectl apply -f .kube/analysis.yaml"
                 }
             }
         }
