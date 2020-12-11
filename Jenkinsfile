@@ -106,12 +106,16 @@ pipeline {
         stage("Deploy application") {
             steps {
                 script {
-                    if (!(env.GIT_BRANCH.equals("prod") || env.GIT_BRANCH.equals("origin/prod"))) {
-                        // Temporary - force new image pull - dev only
-                        withKubeConfig([credentialsId: KUBERNETES_CREDENTIALS]) {
-                            sh "kubectl scale --replicas=0 deployment analysis-app -n mydnacodes"
-                            sh "kubectl scale --replicas=1 deployment analysis-app -n mydnacodes"
+                    try {
+                        if (!(env.GIT_BRANCH.equals("prod") || env.GIT_BRANCH.equals("origin/prod"))) {
+                            // Temporary - force new image pull - dev only
+                            withKubeConfig([credentialsId: KUBERNETES_CREDENTIALS]) {
+                                sh "kubectl scale --replicas=0 deployment analysis-app -n mydnacodes"
+                                sh "kubectl scale --replicas=1 deployment analysis-app -n mydnacodes"
+                            }
                         }
+                    } catch (Exception e) {
+                        echo "Deployment has not been scaled."
                     }
                 }
                 withKubeConfig([credentialsId: KUBERNETES_CREDENTIALS]) {
