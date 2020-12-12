@@ -7,7 +7,7 @@ kumuluzee:
   server:
     show-server-info: false
     http:
-      port: 8080
+      port: 8090
   cors-filter:
     servlet:
       allow-origin: "*"
