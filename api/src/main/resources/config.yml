@@ -7,7 +7,7 @@ kumuluzee:
   server:
     show-server-info: false
     http:
-      port: 8090
+      port: 8080
   cors-filter:
     servlet:
       allow-origin: "*"
@@ -21,9 +21,6 @@ kumuluzee:
     servlet:
       mapping: /health/
       enabled: true
-    checks:
-      disk-space-health-check:
-        threshold: 0
   grpc:
     clients:
       - name: sequence-bank-grpc-client
