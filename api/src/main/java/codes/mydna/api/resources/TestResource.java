@@ -24,6 +24,7 @@ public class TestResource {
     @GET
     @Path("{id}")
     public Response getDna(@PathParam("id") String id){
+        LOG.info("grpc-test endpoint called");
         LOG.info("Test id: " + id);
         Dna dna = grpcClient.getDna(id);
         return Response.ok().entity(dna).build();

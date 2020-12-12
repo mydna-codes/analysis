@@ -21,6 +21,9 @@ kumuluzee:
     servlet:
       mapping: /health/
       enabled: true
+    checks:
+      disk-space-health-check:
+        threshold: 0
   grpc:
     clients:
       - name: sequence-bank-grpc-client
