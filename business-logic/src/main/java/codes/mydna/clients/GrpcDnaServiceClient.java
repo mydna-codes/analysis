@@ -1,7 +1,5 @@
 package codes.mydna.clients;
 
-import codes.mydna.exceptions.NotFoundException;
-import codes.mydna.exceptions.RestException;
 import codes.mydna.lib.Dna;
 import codes.mydna.lib.Sequence;
 import codes.mydna.lib.grpc.DnaServiceGrpc;

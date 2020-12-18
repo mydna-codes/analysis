@@ -14,8 +14,9 @@ kumuluzee:
       allow-origin: "*"
       supported-methods: "GET, POST, PUT, PATCH, DELETE, OPTIONS, HEAD"
       exposed-headers: "X-Total-Count"
-  openapi:
+  openapi-mp:
     enabled: true
+    servers: http://localhost:8080
     ui:
       enabled: true
   health:
@@ -27,3 +28,11 @@ kumuluzee:
       - name: sequence-bank-grpc-client
         port: 8081
         address: localhost
+  graphql:
+    mapping: /graphql
+    ui:
+      mapping: /graphiql
+      enabled: true
+    schema:
+      base-packages:
+        - codes.mydna.lib
