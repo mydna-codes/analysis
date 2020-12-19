@@ -28,7 +28,7 @@
         <kumuluzee-health.version>2.3.0</kumuluzee-health.version>
 
         <!-- mydnacodes -->
-        <mydnacodes-rest-lib.version>1.0.0-SNAPSHOT</mydnacodes-rest-lib.version>
+        <mydnacodes-rest-lib.version>1.0.2-SNAPSHOT</mydnacodes-rest-lib.version>
         <mydnacodes-sequence-bank-lib.version>1.0.0-SNAPSHOT</mydnacodes-sequence-bank-lib.version>
 
     </properties>

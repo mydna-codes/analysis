@@ -9,6 +9,13 @@
         <version>1.0.0-SNAPSHOT</version>
     </parent>
 
+    <dependencies>
+        <dependency>
+            <groupId>codes.mydna</groupId>
+            <artifactId>rest-lib</artifactId>
+        </dependency>
+    </dependencies>
+
     <artifactId>analysis-lib</artifactId>
 
     <name>analysis-lib</name>
