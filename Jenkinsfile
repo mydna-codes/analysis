@@ -13,6 +13,7 @@ pipeline {
         COMMIT_AUTHOR          = ""
         COMMIT_MESSAGE         = ""
         PROJECT_VERSION        = ""
+        PROJECT_ARTIFACT_ID    = ""
     }
 
     tools {
@@ -26,6 +27,7 @@ pipeline {
                 script {
                     pom                  = readMavenPom file:"pom.xml"
                     PROJECT_VERSION      = pom.version
+                    PROJECT_ARTIFACT_ID  = pom.artifactId
                     COMMIT_MESSAGE       = sh script: "git show -s --pretty='%s'", returnStdout: true
                     COMMIT_AUTHOR        = sh script: "git show -s --pretty='%cn <%ce>'", returnStdout: true
                     COMMIT_AUTHOR        = COMMIT_AUTHOR.trim()
@@ -130,18 +132,18 @@ pipeline {
         success {
             slackSend (color: '#57BA57',
                        message: """[<${env.BUILD_URL}|Build ${env.BUILD_NUMBER}>] *SUCCESSFUL*\n
-                                  |Job: *${env.JOB_NAME}*\n
-                                  |Branch: ${GIT_BRANCH}
-                                  |Author: ${COMMIT_AUTHOR}
+                                  |Version: `${PROJECT_ARTIFACT_ID}:${PROJECT_VERSION}`\n
+                                  |Branch:  *${GIT_BRANCH}*
+                                  |Author:  ${COMMIT_AUTHOR}
                                   |Message: ${COMMIT_MESSAGE}""".stripMargin()
             )
         }
         failure {
             slackSend (color: '#BD0808',
                        message: """[<${env.BUILD_URL}|Build ${env.BUILD_NUMBER}>] *FAILED*\n
-                                  |Job: *${env.JOB_NAME}*\n
-                                  |Branch: ${GIT_BRANCH}
-                                  |Author: ${COMMIT_AUTHOR}
+                                  |Version: `${PROJECT_ARTIFACT_ID}:${PROJECT_VERSION}`\n
+                                  |Branch:  *${GIT_BRANCH}*
+                                  |Author:  ${COMMIT_AUTHOR}
                                   |Message: ${COMMIT_MESSAGE}""".stripMargin()
             )
         }
