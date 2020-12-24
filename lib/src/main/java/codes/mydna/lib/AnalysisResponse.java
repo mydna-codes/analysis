@@ -1,36 +1,45 @@
 package codes.mydna.lib;
 
-import codes.mydna.utils.TransferEntity;
+import codes.mydna.status.Status;
 
 import java.util.List;
 
 public class AnalysisResponse {
 
-    private String sequenceId;
-    private List<TransferEntity<SearchedEnzyme>> enzymes;
-    private List<TransferEntity<SearchedGene>> genes;
+    private String dnaId;
+    private Status status;
+    private List<FoundEnzyme> enzymes;
+    private List<FoundGene> genes;
 
-    public String getSequenceId() {
-        return sequenceId;
+    public String getDnaId() {
+        return dnaId;
     }
 
-    public void setSequenceId(String sequenceId) {
-        this.sequenceId = sequenceId;
+    public void setDnaId(String dnaId) {
+        this.dnaId = dnaId;
     }
 
-    public List<TransferEntity<SearchedEnzyme>> getEnzymes() {
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }
+
+    public List<FoundEnzyme> getEnzymes() {
         return enzymes;
     }
 
-    public void setEnzymes(List<TransferEntity<SearchedEnzyme>> enzymes) {
+    public void setEnzymes(List<FoundEnzyme> enzymes) {
         this.enzymes = enzymes;
     }
 
-    public List<TransferEntity<SearchedGene>> getGenes() {
+    public List<FoundGene> getGenes() {
         return genes;
     }
 
-    public void setGenes(List<TransferEntity<SearchedGene>> genes) {
+    public void setGenes(List<FoundGene> genes) {
         this.genes = genes;
     }
 }

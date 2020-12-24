@@ -4,16 +4,16 @@ import java.util.List;
 
 public class AnalysisRequest {
 
-    private String sequenceId;
+    private String dnaId;
     private List<String> enzymeIds;
     private List<String> geneIds;
 
-    public String getSequenceId() {
-        return sequenceId;
+    public String getDnaId() {
+        return dnaId;
     }
 
-    public void setSequenceId(String sequenceId) {
-        this.sequenceId = sequenceId;
+    public void setDnaId(String dnaId) {
+        this.dnaId = dnaId;
     }
 
     public List<String> getEnzymeIds() {

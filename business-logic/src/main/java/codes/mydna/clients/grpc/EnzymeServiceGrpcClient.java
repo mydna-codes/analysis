@@ -64,14 +64,17 @@ public class EnzymeServiceGrpcClient {
         return enzymes;
     }
 
-    public TransferEntity<Enzyme> mapToTransferEntity(EnzymeServiceProto.Enzyme protoEnzyme){
-        Enzyme enzyme = new Enzyme();
-        enzyme.setId(protoEnzyme.getBaseSequenceInfo().getId());
-        enzyme.setName(protoEnzyme.getBaseSequenceInfo().getName());
+    private TransferEntity<Enzyme> mapToTransferEntity(EnzymeServiceProto.Enzyme protoEnzyme){
 
         Sequence sequence = new Sequence();
         sequence.setValue(protoEnzyme.getSequence().getValue());
+
+        Enzyme enzyme = new Enzyme();
         enzyme.setSequence(sequence);
+        enzyme.setId(protoEnzyme.getBaseSequenceInfo().getId());
+        enzyme.setName(protoEnzyme.getBaseSequenceInfo().getName());
+        enzyme.setUpperCut(protoEnzyme.getUpperCut());
+        enzyme.setLowerCut(protoEnzyme.getLowerCut());
 
         TransferEntity<Enzyme> entity = new TransferEntity<>();
         entity.setEntity(enzyme);

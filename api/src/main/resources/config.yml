@@ -8,7 +8,7 @@ kumuluzee:
     base-url: http://localhost:8080
     show-server-info: false
     http:
-      port: 8090
+      port: 8080
   cors-filter:
     servlet:
       allow-origin: "*"

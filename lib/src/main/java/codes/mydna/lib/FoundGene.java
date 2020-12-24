@@ -2,7 +2,7 @@ package codes.mydna.lib;
 
 import java.util.List;
 
-public class SearchedGene {
+public class FoundGene {
 
     private String geneId;
     private List<GeneOverlap> overlaps;

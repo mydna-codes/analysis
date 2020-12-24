@@ -2,7 +2,7 @@ package codes.mydna.lib;
 
 import java.util.List;
 
-public class SearchedEnzyme {
+public class FoundEnzyme {
 
     private String enzymeId;
     private List<EnzymeCut> cuts;

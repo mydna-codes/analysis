@@ -64,7 +64,7 @@ public class GeneServiceGrpcClient {
         return genes;
     }
 
-    public TransferEntity<Gene> mapToTransferEntity(GeneServiceProto.Gene protoGene){
+    private TransferEntity<Gene> mapToTransferEntity(GeneServiceProto.Gene protoGene){
         Gene gene = new Gene();
         gene.setId(protoGene.getBaseSequenceInfo().getId());
         gene.setName(protoGene.getBaseSequenceInfo().getName());

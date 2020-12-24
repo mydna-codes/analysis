@@ -1,11 +1,12 @@
 package codes.mydna.api.resources.graphql;
 
-import codes.mydna.clients.grpc.DnaServiceGrpcClient;
-import codes.mydna.lib.Dna;
-import codes.mydna.utils.TransferEntity;
+import codes.mydna.lib.AnalysisRequest;
+import codes.mydna.lib.AnalysisResponse;
+import codes.mydna.services.AnalysisService;
 import com.kumuluz.ee.graphql.annotations.GraphQLClass;
 import io.leangen.graphql.annotations.GraphQLArgument;
-import io.leangen.graphql.annotations.GraphQLQuery;
+import io.leangen.graphql.annotations.GraphQLMutation;
+import io.leangen.graphql.annotations.GraphQLNonNull;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
@@ -15,16 +16,17 @@ import javax.inject.Inject;
 public class AnalysisResource {
 
     @Inject
-    private DnaServiceGrpcClient dnaServiceGrpcClient;
+    private AnalysisService analysisService;
 
-    @GraphQLQuery
-    public String hello(@GraphQLArgument(name = "input") String input) {
-        return "world " + input;
-    }
+    // TODO: Partial analysis
 
-    @GraphQLQuery
-    public TransferEntity<Dna> getDna(@GraphQLArgument(name = "id") String id) {
-        return dnaServiceGrpcClient.getDna(id);
+    @GraphQLMutation
+    public AnalysisResponse analyzeDna(
+            @GraphQLNonNull
+            @GraphQLArgument(name = "request", description = "Request that contains id of DNA that " +
+                    "will be analyzed and ids of enzymes/genes to be found in it."
+            ) AnalysisRequest request) {
+        return analysisService.analyze(request);
     }
 
 }
