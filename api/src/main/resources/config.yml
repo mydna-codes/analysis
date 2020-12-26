@@ -4,6 +4,10 @@ kumuluzee:
   env:
     prod: false
     name: dev
+  dev:
+    scan-libraries:
+      - analysis-lib
+      - sequence-bank-lib-v1
   server:
     base-url: http://localhost:8080
     show-server-info: false
@@ -18,7 +22,7 @@ kumuluzee:
     enabled: true
     servers: http://localhost:8080
     scan:
-      packages: codes.mydna.lib
+      packages: codes.mydna.lib, codes.mydna.api
     ui:
       enabled: true
   health:
