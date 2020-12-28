@@ -4,7 +4,7 @@ import codes.mydna.lib.AnalysisRequest;
 import codes.mydna.lib.AnalysisResponse;
 
 /**
- * @see codes.mydna.services.impl
+ * @see codes.mydna.services.impl.AnalysisServiceImpl
  */
 public interface AnalysisService {
 

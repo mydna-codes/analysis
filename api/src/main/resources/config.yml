@@ -6,8 +6,8 @@ kumuluzee:
     name: dev
   dev:
     scan-libraries:
+      - rest-lib
       - analysis-lib
-      - sequence-bank-lib-v1
   server:
     base-url: http://localhost:8080
     show-server-info: false
@@ -17,14 +17,13 @@ kumuluzee:
     servlet:
       allow-origin: "*"
       supported-methods: "GET, POST, PUT, PATCH, DELETE, OPTIONS, HEAD"
-      exposed-headers: "X-Total-Count"
+      exposed-headers: "X-Total-Count, Content-Type"
   openapi-mp:
-    enabled: true
+    enabled: false
     servers: http://localhost:8080
-    scan:
-      packages: codes.mydna.lib, codes.mydna.api
     ui:
-      enabled: true
+      mapping: /openapi/ui
+      enabled: false
   health:
     servlet:
       mapping: /health/
