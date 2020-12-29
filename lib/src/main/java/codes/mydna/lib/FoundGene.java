@@ -4,15 +4,15 @@ import java.util.List;
 
 public class FoundGene {
 
-    private String geneId;
+    private String id;
     private List<GeneOverlap> overlaps;
 
-    public String getGeneId() {
-        return geneId;
+    public String getId() {
+        return id;
     }
 
-    public void setGeneId(String geneId) {
-        this.geneId = geneId;
+    public void setId(String id) {
+        this.id = id;
     }
 
     public List<GeneOverlap> getOverlaps() {

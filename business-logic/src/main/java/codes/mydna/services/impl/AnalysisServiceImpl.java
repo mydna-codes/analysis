@@ -100,7 +100,7 @@ public class AnalysisServiceImpl implements AnalysisService {
 
             // Create new searchedEnzyme
             FoundEnzyme foundEnzyme = new FoundEnzyme();
-            foundEnzyme.setEnzymeId(enzyme.getEntity().getId());
+            foundEnzyme.setId(enzyme.getEntity().getId());
             foundEnzyme.setCuts(enzymeCuts);
 
             // Add enzyme to the list
@@ -162,7 +162,7 @@ public class AnalysisServiceImpl implements AnalysisService {
 
             // Create new searchedEnzyme
             FoundGene foundGene = new FoundGene();
-            foundGene.setGeneId(gene.getEntity().getId());
+            foundGene.setId(gene.getEntity().getId());
             foundGene.setOverlaps(geneOverlaps);
 
             // Add gene to the list
