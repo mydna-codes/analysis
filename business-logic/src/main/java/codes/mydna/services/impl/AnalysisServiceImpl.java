@@ -46,7 +46,6 @@ public class AnalysisServiceImpl implements AnalysisService {
         Assert.fieldNotEmpty(request.getDnaId(), "dnaId");
 
         TransferEntity<Dna> receivedDna = dnaServiceGrpcClient.getDna(request.getDnaId());
-        response.setDnaId(request.getDnaId());
         response.setStatus(receivedDna.getStatus());
 
         // Dna sequence response validation
@@ -54,6 +53,7 @@ public class AnalysisServiceImpl implements AnalysisService {
             return response;
         }
 
+        response.setDna(receivedDna.getEntity());
         String sequence = receivedDna.getEntity().getSequence().getValue();
 
         List<TransferEntity<Enzyme>> receivedEnzymes = enzymeServiceGrpcClient.getMultipleEnzymes(request.getEnzymeIds());
@@ -98,9 +98,13 @@ public class AnalysisServiceImpl implements AnalysisService {
                 enzymeCuts.add(cut);
             }
 
+            // Skip adding redundant genes
+            if (enzymeCuts.isEmpty())
+                continue;
+
             // Create new searchedEnzyme
             FoundEnzyme foundEnzyme = new FoundEnzyme();
-            foundEnzyme.setId(enzyme.getEntity().getId());
+            foundEnzyme.setEnzyme(enzyme.getEntity());
             foundEnzyme.setCuts(enzymeCuts);
 
             // Add enzyme to the list
@@ -160,9 +164,13 @@ public class AnalysisServiceImpl implements AnalysisService {
                 geneOverlaps.add(overlap);
             }
 
+            // Skip adding redundant genes
+            if (geneOverlaps.isEmpty())
+                continue;
+
             // Create new searchedEnzyme
             FoundGene foundGene = new FoundGene();
-            foundGene.setId(gene.getEntity().getId());
+            foundGene.setGene(gene.getEntity());
             foundGene.setOverlaps(geneOverlaps);
 
             // Add gene to the list

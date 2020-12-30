@@ -6,17 +6,17 @@ import java.util.List;
 
 public class AnalysisResponse {
 
-    private String dnaId;
+    private Dna dna;
     private Status status;
     private List<FoundEnzyme> enzymes;
     private List<FoundGene> genes;
 
-    public String getDnaId() {
-        return dnaId;
+    public Dna getDna() {
+        return dna;
     }
 
-    public void setDnaId(String dnaId) {
-        this.dnaId = dnaId;
+    public void setDna(Dna dna) {
+        this.dna = dna;
     }
 
     public Status getStatus() {

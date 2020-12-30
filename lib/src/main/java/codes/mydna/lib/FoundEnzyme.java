@@ -4,15 +4,15 @@ import java.util.List;
 
 public class FoundEnzyme {
 
-    private String id;
+    private Enzyme enzyme;
     private List<EnzymeCut> cuts;
 
-    public String getId() {
-        return id;
+    public Enzyme getEnzyme() {
+        return enzyme;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setEnzyme(Enzyme enzyme) {
+        this.enzyme = enzyme;
     }
 
     public List<EnzymeCut> getCuts() {
