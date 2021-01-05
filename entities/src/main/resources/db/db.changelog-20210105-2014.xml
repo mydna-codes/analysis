@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.3.xsd">
+
+    <changeSet author="DinMusic" id="create_analysis_entity_table">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="analysis_table"/>
+            </not>
+        </preConditions>
+        <createTable tableName="analysis_table">
+            <!-- Base -->
+            <column name="id" type="varchar(128)">
+                <constraints primaryKey="true"
+                             unique="true"
+                             nullable="false"/>
+            </column>
+            <column name="created" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_modified" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <!-- Table specific -->
+            <column name="dna_id" type="varchar(256)"/>
+            <column name="found_gene_ids" type="varchar"/>
+            <column name="found_enzyme_ids" type="varchar"/>
+        </createTable>
+    </changeSet>
+
+</databaseChangeLog>
