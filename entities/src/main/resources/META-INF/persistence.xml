@@ -5,7 +5,7 @@
         <non-jta-data-source>jdbc/analysis-service-db</non-jta-data-source>
 
         <class>codes.mydna.entities.BaseEntity</class>
-        <class>codes.mydna.entities.AnalysisEntity</class>
+        <class>codes.mydna.entities.AnalysisRequestEntity</class>
 
         <properties>
             <property name="javax.persistence.schema-generation.create-source" value="metadata"/>

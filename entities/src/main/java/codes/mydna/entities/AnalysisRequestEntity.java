@@ -7,7 +7,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "ANALYSIS_TABLE")
-public class AnalysisEntity extends BaseEntity{
+public class AnalysisRequestEntity extends BaseEntity{
 
     @Column(name = "DNA_ID", updatable = false)
     private String dnaId;

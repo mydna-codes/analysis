@@ -28,6 +28,13 @@ kumuluzee:
     servlet:
       mapping: /health/
       enabled: true
+    checks:
+      data-source-health-check:
+        type: liveness
+        jndi-name: jdbc/analysis-service-db
+      disk-space-health-check:
+        threshold: 100000000
+        type: liveness
   grpc:
     clients:
       - name: sequence-bank-grpc-client
@@ -43,7 +50,7 @@ kumuluzee:
         - codes.mydna.lib
   datasources:
     - jndi-name: jdbc/analysis-service-db
-      connection-url: jdbc:postgresql://localhost:5432/sequence-bank
+      connection-url: jdbc:postgresql://localhost:5432/analysis
       username: postgres
       password: postgres
       pool:
