@@ -111,8 +111,7 @@ pipeline {
                     try {
                         if (!(env.GIT_BRANCH.equals("prod") || env.GIT_BRANCH.equals("origin/prod"))) {
                             withKubeConfig([credentialsId: KUBERNETES_CREDENTIALS]) {
-                                sh "kubectl scale --replicas=0 deployment analysis-app -n mydnacodes"
-                                sh "kubectl scale --replicas=1 deployment analysis-app -n mydnacodes"
+                                sh "kubectl delete deployments.apps -n mydnacodes notification-service-app"
                             }
                         }
                     } catch (Exception e) {
@@ -121,8 +120,7 @@ pipeline {
                     }
                 }
                 withKubeConfig([credentialsId: KUBERNETES_CREDENTIALS]) {
-                    // sh "kubectl apply -f .kube/"
-                    sh "kubectl apply -f .kube/analysis.yaml"
+                    sh "kubectl apply -f .kube/"
                 }
             }
         }
