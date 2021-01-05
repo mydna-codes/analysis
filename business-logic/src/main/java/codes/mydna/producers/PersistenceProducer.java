@@ -8,7 +8,7 @@ import javax.persistence.PersistenceContext;
 
 public class PersistenceProducer {
 
-    @PersistenceContext(unitName = "analysis-service-jpa-unit")
+    @PersistenceContext(unitName = "analysis-jpa-unit")
     private EntityManager em;
 
     @Produces
