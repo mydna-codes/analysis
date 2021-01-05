@@ -111,11 +111,11 @@ pipeline {
                     try {
                         if (!(env.GIT_BRANCH.equals("prod") || env.GIT_BRANCH.equals("origin/prod"))) {
                             withKubeConfig([credentialsId: KUBERNETES_CREDENTIALS]) {
-                                sh "kubectl delete deployments.apps -n mydnacodes notification-service-app"
+                                sh "kubectl delete deployments.apps -n mydnacodes analysis-app"
                             }
                         }
                     } catch (Exception e) {
-                        echo "Deployment has not been scaled."
+                        echo "Previous deployment has not been removed."
                         echo e.getMessage()
                     }
                 }
