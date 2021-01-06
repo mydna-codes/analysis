@@ -45,10 +45,7 @@ public class AnalysisResultMapper {
 
         AnalysisResultEntity entity = new AnalysisResultEntity();
 
-        String name = result.getAnalysisName();
-        entity.setAnalysisName(name == null || name.isEmpty()
-                ? "Analysis of '" + result.getDna().getName() + "'"
-                : name);
+        entity.setAnalysisName(result.getAnalysisName());
         entity.setTotalExecutionTime(result.getTotalExecutionTime());
         entity.setAnalysisExecutionTime(result.getAnalysisExecutionTime());
         entity.setDnaId(result.getDna().getId());

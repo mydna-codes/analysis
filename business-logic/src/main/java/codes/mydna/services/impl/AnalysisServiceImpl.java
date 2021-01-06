@@ -26,7 +26,7 @@ public class AnalysisServiceImpl implements AnalysisService {
     private static final Logger LOG = Logger.getLogger(AnalysisServiceImpl.class.getName());
 
     @PostConstruct
-    private void postConstruct(){
+    private void postConstruct() {
         LOG.info(AnalysisServiceImpl.class.getSimpleName() + " initialized");
     }
 
@@ -45,40 +45,55 @@ public class AnalysisServiceImpl implements AnalysisService {
     @Override
     public AnalysisResult analyze(AnalysisRequest request) {
 
-        AnalysisResult response = new AnalysisResult();
+        AnalysisResult result = new AnalysisResult();
 
         Assert.fieldNotEmpty(request.getDnaId(), "dnaId");
 
+        // Initialize total execution timer
+        long totalExecTimer = System.currentTimeMillis();
+
         TransferEntity<Dna> receivedDna = dnaServiceGrpcClient.getDna(request.getDnaId());
-        response.setStatus(receivedDna.getStatus());
+        result.setStatus(receivedDna.getStatus());
 
         // Dna sequence response validation
-        if(receivedDna.getStatus() != Status.OK){
-            return response;
+        if (receivedDna.getStatus() != Status.OK) {
+            return result;
         }
 
-        response.setDna(receivedDna.getEntity());
+        result.setDna(receivedDna.getEntity());
         String sequence = receivedDna.getEntity().getSequence().getValue();
 
+        String name = request.getAnalysisName();
+        result.setAnalysisName((name == null || name.isEmpty())
+                ? "Analysis of '" + result.getDna().getName() + "' DNA sequence"
+                : name);
+
+        // Start analysis timer
+        long analysisTimer = System.currentTimeMillis();
+
         List<Enzyme> receivedEnzymes = enzymeServiceGrpcClient.getMultipleEnzymes(request.getEnzymeIds());
-        response.setEnzymes(findEnzymes(sequence, receivedEnzymes));
+        result.setEnzymes(findEnzymes(sequence, receivedEnzymes));
 
         List<Gene> receivedGenes = geneServiceGrpcClient.getMultipleGenes(request.getGeneIds());
-        response.setGenes(findGenes(sequence, receivedGenes));
+        result.setGenes(findGenes(sequence, receivedGenes));
 
-        analysisResultService.insertAnalysisResult(response);
+        // Stop timers
+        result.setAnalysisExecutionTime((int) (System.currentTimeMillis() - analysisTimer));
+        result.setTotalExecutionTime((int) (System.currentTimeMillis() - totalExecTimer));
 
-        return response;
+        analysisResultService.insertAnalysisResult(result);
+
+        return result;
     }
 
-    private List<FoundEnzyme> findEnzymes(String sequence, List<Enzyme> enzymes){
+    private List<FoundEnzyme> findEnzymes(String sequence, List<Enzyme> enzymes) {
 
         List<FoundEnzyme> foundEnzymes = new ArrayList<>();
 
-        if(enzymes == null)
+        if (enzymes == null)
             return foundEnzymes;
 
-        for(Enzyme enzyme : enzymes){
+        for (Enzyme enzyme : enzymes) {
 
             // Get enzyme sequence as a string
             String enzymeSequence = enzyme.getSequence().getValue();
@@ -88,7 +103,7 @@ public class AnalysisServiceImpl implements AnalysisService {
 
             // Create cuts for all found indexes
             List<EnzymeCut> enzymeCuts = new ArrayList<>();
-            for(int i : indexes){
+            for (int i : indexes) {
 
                 // Calculate real cuts
                 EnzymeCut cut = new EnzymeCut();
@@ -112,14 +127,14 @@ public class AnalysisServiceImpl implements AnalysisService {
         return foundEnzymes;
     }
 
-    private List<FoundGene> findGenes(String sequence, List<Gene> genes){
+    private List<FoundGene> findGenes(String sequence, List<Gene> genes) {
 
         List<FoundGene> foundGenes = new ArrayList<>();
 
-        if(genes == null)
+        if (genes == null)
             return foundGenes;
 
-        for(Gene gene : genes){
+        for (Gene gene : genes) {
 
             // Get gene sequence as a string
             String geneSequence = gene.getSequence().getValue();
@@ -129,7 +144,7 @@ public class AnalysisServiceImpl implements AnalysisService {
 
             // Create overlaps for all found indexes
             List<GeneOverlap> geneOverlaps = new ArrayList<>();
-            for(int i : indexes){
+            for (int i : indexes) {
 
                 // Calculate real cuts
                 GeneOverlap overlap = new GeneOverlap();
@@ -146,7 +161,7 @@ public class AnalysisServiceImpl implements AnalysisService {
             indexes = BasePairUtil.findAll(sequence, geneReverseSequence, SequenceType.GENE);
 
             // Add overlaps for all found indexes for reverse sequence
-            for(int i : indexes){
+            for (int i : indexes) {
 
                 // Calculate real cuts
                 GeneOverlap overlap = new GeneOverlap();
@@ -170,7 +185,6 @@ public class AnalysisServiceImpl implements AnalysisService {
         }
         return foundGenes;
     }
-
 
 
 }

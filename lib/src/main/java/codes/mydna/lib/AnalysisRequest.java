@@ -4,9 +4,18 @@ import java.util.List;
 
 public class AnalysisRequest extends BaseType {
 
+    private String analysisName;
     private String dnaId;
     private List<String> enzymeIds;
     private List<String> geneIds;
+
+    public String getAnalysisName() {
+        return analysisName;
+    }
+
+    public void setAnalysisName(String analysisName) {
+        this.analysisName = analysisName;
+    }
 
     public String getDnaId() {
         return dnaId;
