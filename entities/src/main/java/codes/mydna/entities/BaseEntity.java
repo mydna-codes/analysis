@@ -9,16 +9,16 @@ import java.util.Date;
 public class BaseEntity {
 
     @Id
-    @Column(name = "id", nullable = false, updatable = false, unique = true)
+    @Column(name = "ID", nullable = false, updatable = false, unique = true)
     @GeneratedValue(generator = "uuid-generator")
     @GenericGenerator(name = "uuid-generator", strategy = "uuid2")
     private String id;
 
-    @Column(name="created", nullable = false, updatable = false)
+    @Column(name="CREATED", nullable = false, updatable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date created;
 
-    @Column(name="last_modified", nullable = false)
+    @Column(name="LAST_MODIFIED", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date lastModified;
 

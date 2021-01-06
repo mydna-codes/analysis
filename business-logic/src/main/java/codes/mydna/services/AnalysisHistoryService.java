@@ -5,9 +5,9 @@ import codes.mydna.utils.EntityList;
 import com.kumuluz.ee.rest.beans.QueryParameters;
 
 /**
- * @see codes.mydna.services.impl.AnalysisRequestServiceImpl
+ * @see codes.mydna.services.impl.AnalysisHistoryServiceImpl
  */
-public interface AnalysisRequestService {
+public interface AnalysisHistoryService {
 
     EntityList<AnalysisRequest> getAnalysisRequests(QueryParameters qp);
     AnalysisRequest getAnalysisRequest(String id);

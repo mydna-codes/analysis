@@ -6,6 +6,11 @@
 
         <class>codes.mydna.entities.BaseEntity</class>
         <class>codes.mydna.entities.AnalysisRequestEntity</class>
+        <class>codes.mydna.entities.AnalysisResultEntity</class>
+        <class>codes.mydna.entities.FoundGeneEntity</class>
+        <class>codes.mydna.entities.GeneOverlapEntity</class>
+        <class>codes.mydna.entities.FoundEnzymeEntity</class>
+        <class>codes.mydna.entities.EnzymeCutEntity</class>
 
         <properties>
             <property name="javax.persistence.schema-generation.create-source" value="metadata"/>

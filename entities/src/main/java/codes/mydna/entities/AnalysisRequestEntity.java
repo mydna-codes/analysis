@@ -6,7 +6,7 @@ import javax.persistence.*;
 import java.util.List;
 
 @Entity
-@Table(name = "ANALYSIS_TABLE")
+@Table(name = "ANALYSIS_REQUEST_TABLE")
 public class AnalysisRequestEntity extends BaseEntity{
 
     @Column(name = "DNA_ID", updatable = false)

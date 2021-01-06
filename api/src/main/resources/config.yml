@@ -50,7 +50,7 @@ kumuluzee:
         - codes.mydna.lib
   datasources:
     - jndi-name: jdbc/analysis-service-db
-      connection-url: jdbc:postgresql://localhost:5432/analysis
+      connection-url: jdbc:postgresql://localhost:5432/sequence-bank
       username: postgres
       password: postgres
       pool:
@@ -62,5 +62,5 @@ kumuluzee:
         - jndi-name: jdbc/analysis-service-db
           changelog: db/db.changelog-master.xml
           startup:
-            dropAll: false
+            dropAll: true
             update: true

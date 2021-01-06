@@ -13,6 +13,10 @@
 
     <dependencies>
         <dependency>
+            <groupId>codes.mydna</groupId>
+            <artifactId>analysis-lib</artifactId>
+        </dependency>
+        <dependency>
             <groupId>com.kumuluz.ee</groupId>
             <artifactId>kumuluzee-jpa-hibernate</artifactId>
         </dependency>

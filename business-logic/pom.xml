@@ -17,10 +17,6 @@
     <dependencies>
         <dependency>
             <groupId>codes.mydna</groupId>
-            <artifactId>analysis-lib</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>codes.mydna</groupId>
             <artifactId>entities</artifactId>
         </dependency>
 
