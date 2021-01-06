@@ -15,7 +15,9 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.net.ssl.SSLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 @ApplicationScoped
 public class GeneServiceGrpcClient {
@@ -37,7 +39,7 @@ public class GeneServiceGrpcClient {
         }
     }
 
-    public List<TransferEntity<Gene>> getMultipleGenes(List<String> ids){
+    public List<Gene> getMultipleGenes(List<String> ids){
 
         // If ids are not passed, don't call grpc and return empty list
         if(ids == null || ids.isEmpty()){
@@ -56,15 +58,19 @@ public class GeneServiceGrpcClient {
             return new ArrayList<>();
         }
 
-        List<TransferEntity<Gene>> genes = new ArrayList<>();
-        for(int i = 0; i < response.getGeneCount(); i++){
-            genes.add(mapToTransferEntity(response.getGene(i)));
-        }
-
-        return genes;
+        return response.getGeneList()
+                .stream()
+                .map(this::fromProto)
+                .filter(Objects::nonNull)
+                .collect(Collectors.toList());
     }
 
-    private TransferEntity<Gene> mapToTransferEntity(GeneServiceProto.Gene protoGene){
+    private Gene fromProto(GeneServiceProto.Gene protoGene){
+
+        Status status = Status.valueOf(protoGene.getEntityStatus());
+        if(status != Status.OK)
+            return null;
+
         Gene gene = new Gene();
         gene.setId(protoGene.getBaseSequenceInfo().getId());
         gene.setName(protoGene.getBaseSequenceInfo().getName());
@@ -73,11 +79,7 @@ public class GeneServiceGrpcClient {
         sequence.setValue(protoGene.getSequence().getValue());
         gene.setSequence(sequence);
 
-        TransferEntity<Gene> entity = new TransferEntity<>();
-        entity.setEntity(gene);
-        entity.setStatus(Status.valueOf(protoGene.getEntityStatus()));
-
-        return entity;
+        return gene;
     }
 
 }

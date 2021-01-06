@@ -7,6 +7,7 @@ import codes.mydna.lib.*;
 import codes.mydna.lib.enums.Orientation;
 import codes.mydna.lib.enums.SequenceType;
 import codes.mydna.lib.util.BasePairUtil;
+import codes.mydna.services.AnalysisResultService;
 import codes.mydna.services.AnalysisService;
 import codes.mydna.status.Status;
 import codes.mydna.utils.TransferEntity;
@@ -38,10 +39,13 @@ public class AnalysisServiceImpl implements AnalysisService {
     @Inject
     private GeneServiceGrpcClient geneServiceGrpcClient;
 
-    @Override
-    public AnalysisResponse analyze(AnalysisRequest request) {
+    @Inject
+    private AnalysisResultService analysisResultService;
 
-        AnalysisResponse response = new AnalysisResponse();
+    @Override
+    public AnalysisResult analyze(AnalysisRequest request) {
+
+        AnalysisResult response = new AnalysisResult();
 
         Assert.fieldNotEmpty(request.getDnaId(), "dnaId");
 
@@ -56,33 +60,28 @@ public class AnalysisServiceImpl implements AnalysisService {
         response.setDna(receivedDna.getEntity());
         String sequence = receivedDna.getEntity().getSequence().getValue();
 
-        List<TransferEntity<Enzyme>> receivedEnzymes = enzymeServiceGrpcClient.getMultipleEnzymes(request.getEnzymeIds());
+        List<Enzyme> receivedEnzymes = enzymeServiceGrpcClient.getMultipleEnzymes(request.getEnzymeIds());
         response.setEnzymes(findEnzymes(sequence, receivedEnzymes));
 
-        List<TransferEntity<Gene>> receivedGenes = geneServiceGrpcClient.getMultipleGenes(request.getGeneIds());
+        List<Gene> receivedGenes = geneServiceGrpcClient.getMultipleGenes(request.getGeneIds());
         response.setGenes(findGenes(sequence, receivedGenes));
+
+        analysisResultService.insertAnalysisResult(response);
 
         return response;
     }
 
-    private List<FoundEnzyme> findEnzymes(String sequence, List<TransferEntity<Enzyme>> enzymes){
+    private List<FoundEnzyme> findEnzymes(String sequence, List<Enzyme> enzymes){
 
         List<FoundEnzyme> foundEnzymes = new ArrayList<>();
 
         if(enzymes == null)
             return foundEnzymes;
 
-        for(TransferEntity<Enzyme> enzyme : enzymes){
-            TransferEntity<FoundEnzyme> transferEntity = new TransferEntity<>();
-            transferEntity.setStatus(enzyme.getStatus());
-
-            // If enzyme status is not valid, skip searching cuts
-            if(transferEntity.getStatus() != Status.OK){
-                continue;
-            }
+        for(Enzyme enzyme : enzymes){
 
             // Get enzyme sequence as a string
-            String enzymeSequence = enzyme.getEntity().getSequence().getValue();
+            String enzymeSequence = enzyme.getSequence().getValue();
 
             // Find all cut indexes for provided enzyme
             List<Integer> indexes = BasePairUtil.findAll(sequence, enzymeSequence, SequenceType.ENZYME);
@@ -93,8 +92,8 @@ public class AnalysisServiceImpl implements AnalysisService {
 
                 // Calculate real cuts
                 EnzymeCut cut = new EnzymeCut();
-                cut.setUpperCut(i + enzyme.getEntity().getUpperCut());
-                cut.setLowerCut(i + enzyme.getEntity().getLowerCut());
+                cut.setUpperCut(i + enzyme.getUpperCut());
+                cut.setLowerCut(i + enzyme.getLowerCut());
                 enzymeCuts.add(cut);
             }
 
@@ -104,7 +103,7 @@ public class AnalysisServiceImpl implements AnalysisService {
 
             // Create new searchedEnzyme
             FoundEnzyme foundEnzyme = new FoundEnzyme();
-            foundEnzyme.setEnzyme(enzyme.getEntity());
+            foundEnzyme.setEnzyme(enzyme);
             foundEnzyme.setCuts(enzymeCuts);
 
             // Add enzyme to the list
@@ -113,24 +112,17 @@ public class AnalysisServiceImpl implements AnalysisService {
         return foundEnzymes;
     }
 
-    private List<FoundGene> findGenes(String sequence, List<TransferEntity<Gene>> genes){
+    private List<FoundGene> findGenes(String sequence, List<Gene> genes){
 
         List<FoundGene> foundGenes = new ArrayList<>();
 
         if(genes == null)
             return foundGenes;
 
-        for(TransferEntity<Gene> gene : genes){
-            TransferEntity<FoundEnzyme> transferEntity = new TransferEntity<>();
-            transferEntity.setStatus(gene.getStatus());
-
-            // If gene status is not valid, skip searching overlaps
-            if(transferEntity.getStatus() != Status.OK){
-                continue;
-            }
+        for(Gene gene : genes){
 
             // Get gene sequence as a string
-            String geneSequence = gene.getEntity().getSequence().getValue();
+            String geneSequence = gene.getSequence().getValue();
 
             // Find all overlap indexes for provided gene
             List<Integer> indexes = BasePairUtil.findAll(sequence, geneSequence, SequenceType.GENE);
@@ -170,7 +162,7 @@ public class AnalysisServiceImpl implements AnalysisService {
 
             // Create new searchedEnzyme
             FoundGene foundGene = new FoundGene();
-            foundGene.setGene(gene.getEntity());
+            foundGene.setGene(gene);
             foundGene.setOverlaps(geneOverlaps);
 
             // Add gene to the list

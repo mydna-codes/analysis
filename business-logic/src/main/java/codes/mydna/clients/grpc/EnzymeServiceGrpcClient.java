@@ -15,7 +15,9 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.net.ssl.SSLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 @ApplicationScoped
 public class EnzymeServiceGrpcClient {
@@ -37,7 +39,7 @@ public class EnzymeServiceGrpcClient {
         }
     }
 
-    public List<TransferEntity<Enzyme>> getMultipleEnzymes(List<String> ids){
+    public List<Enzyme> getMultipleEnzymes(List<String> ids){
 
         // If ids are not passed, don't call grpc and return empty list
         if(ids == null || ids.isEmpty()){
@@ -56,15 +58,18 @@ public class EnzymeServiceGrpcClient {
             return new ArrayList<>();
         }
 
-        List<TransferEntity<Enzyme>> enzymes = new ArrayList<>();
-        for(int i = 0; i < response.getEnzymeCount(); i++){
-            enzymes.add(mapToTransferEntity(response.getEnzyme(i)));
-        }
-
-        return enzymes;
+        return response.getEnzymeList()
+                .stream()
+                .map(this::fromProto)
+                .filter(Objects::nonNull)
+                .collect(Collectors.toList());
     }
 
-    private TransferEntity<Enzyme> mapToTransferEntity(EnzymeServiceProto.Enzyme protoEnzyme){
+    private Enzyme fromProto(EnzymeServiceProto.Enzyme protoEnzyme){
+
+        Status status = Status.valueOf(protoEnzyme.getEntityStatus());
+        if(status != Status.OK)
+            return null;
 
         Sequence sequence = new Sequence();
         sequence.setValue(protoEnzyme.getSequence().getValue());
@@ -76,11 +81,7 @@ public class EnzymeServiceGrpcClient {
         enzyme.setUpperCut(protoEnzyme.getUpperCut());
         enzyme.setLowerCut(protoEnzyme.getLowerCut());
 
-        TransferEntity<Enzyme> entity = new TransferEntity<>();
-        entity.setEntity(enzyme);
-        entity.setStatus(Status.valueOf(protoEnzyme.getEntityStatus()));
-
-        return entity;
+        return enzyme;
     }
 
 }

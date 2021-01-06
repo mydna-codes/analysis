@@ -1,7 +1,7 @@
 package codes.mydna.api.resources.graphql;
 
 import codes.mydna.lib.AnalysisRequest;
-import codes.mydna.lib.AnalysisResponse;
+import codes.mydna.lib.AnalysisResult;
 import codes.mydna.services.AnalysisService;
 import com.kumuluz.ee.graphql.annotations.GraphQLClass;
 import io.leangen.graphql.annotations.GraphQLArgument;
@@ -21,7 +21,7 @@ public class AnalysisResource {
     // TODO: Partial analysis
 
     @GraphQLMutation
-    public AnalysisResponse analyzeDna(
+    public AnalysisResult analyzeDna(
             @GraphQLNonNull
             @GraphQLArgument(name = "request", description = "Request that contains id of DNA that " +
                     "will be analyzed and ids of enzymes/genes to be found in it."

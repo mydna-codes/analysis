@@ -23,6 +23,7 @@
                 <constraints nullable="false"/>
             </column>
             <!-- Table specific -->
+            <column name="analysis_name" type="varchar(128)"/>
             <column name="total_execution_time" type="integer"/>
             <column name="analysis_execution_time" type="integer"/>
             <column name="dna_id" type="varchar(128)"/>

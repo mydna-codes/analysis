@@ -11,7 +11,7 @@ public class FoundEnzymeEntity extends BaseEntity {
     @Column(name = "ENZYME_ID")
     private String enzymeId;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "FOUND_ENZYME_ID")
     private List<EnzymeCutEntity> enzymeCuts;
 

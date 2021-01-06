@@ -10,8 +10,8 @@ public class FoundGeneEntity extends BaseEntity {
     @Column(name = "GENE_ID")
     private String geneId;
 
-    @OneToMany
-    @JoinColumn(name = "GENE_OVERLAP_ID")
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "FOUND_GENE_ID")
     private List<GeneOverlapEntity> geneOverlaps;
 
     public String getGeneId() {

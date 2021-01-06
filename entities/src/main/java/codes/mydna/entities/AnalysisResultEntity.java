@@ -7,6 +7,9 @@ import java.util.List;
 @Table(name = "ANALYSIS_RESULT_TABLE")
 public class AnalysisResultEntity extends BaseEntity {
 
+    @Column(name = "ANALYSIS_NAME")
+    private String analysisName;
+
     @Column(name = "TOTAL_EXECUTION_TIME")
     private int totalExecutionTime;
 
@@ -16,13 +19,21 @@ public class AnalysisResultEntity extends BaseEntity {
     @Column(name = "DNA_ID")
     private String dnaId;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "ANALYSIS_RESULT_ID")
     private List<FoundEnzymeEntity> foundEnzymes;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "ANALYSIS_RESULT_ID")
     private List<FoundGeneEntity> foundGenes;
+
+    public String getAnalysisName() {
+        return analysisName;
+    }
+
+    public void setAnalysisName(String analysisName) {
+        this.analysisName = analysisName;
+    }
 
     public int getTotalExecutionTime() {
         return totalExecutionTime;

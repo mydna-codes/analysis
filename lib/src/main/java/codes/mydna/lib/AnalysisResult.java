@@ -4,12 +4,39 @@ import codes.mydna.status.Status;
 
 import java.util.List;
 
-public class AnalysisResponse {
+public class AnalysisResult extends BaseType {
 
+    private String analysisName;
+    private int totalExecutionTime;
+    private int analysisExecutionTime;
     private Dna dna;
     private Status status;
     private List<FoundEnzyme> enzymes;
     private List<FoundGene> genes;
+
+    public String getAnalysisName() {
+        return analysisName;
+    }
+
+    public void setAnalysisName(String analysisName) {
+        this.analysisName = analysisName;
+    }
+
+    public int getTotalExecutionTime() {
+        return totalExecutionTime;
+    }
+
+    public void setTotalExecutionTime(int totalExecutionTime) {
+        this.totalExecutionTime = totalExecutionTime;
+    }
+
+    public int getAnalysisExecutionTime() {
+        return analysisExecutionTime;
+    }
+
+    public void setAnalysisExecutionTime(int analysisExecutionTime) {
+        this.analysisExecutionTime = analysisExecutionTime;
+    }
 
     public Dna getDna() {
         return dna;
