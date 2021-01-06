@@ -14,11 +14,11 @@ public class AnalysisRequestEntity extends BaseEntity{
 
     @Column(name = "FOUND_ENZYME_IDS", updatable = false)
     @Convert(converter = StringListConverter.class)
-    private List<String> foundEnzymeIds;
+    private List<String> enzymeIds;
 
     @Column(name = "FOUND_GENE_IDS", updatable = false)
     @Convert(converter = StringListConverter.class)
-    private List<String> foundGeneIds;
+    private List<String> geneIds;
 
     public String getDnaId() {
         return dnaId;
@@ -28,19 +28,19 @@ public class AnalysisRequestEntity extends BaseEntity{
         this.dnaId = dnaId;
     }
 
-    public List<String> getFoundEnzymeIds() {
-        return foundEnzymeIds;
+    public List<String> getEnzymeIds() {
+        return enzymeIds;
     }
 
-    public void setFoundEnzymeIds(List<String> foundEnzymeIds) {
-        this.foundEnzymeIds = foundEnzymeIds;
+    public void setEnzymeIds(List<String> enzymeIds) {
+        this.enzymeIds = enzymeIds;
     }
 
-    public List<String> getFoundGeneIds() {
-        return foundGeneIds;
+    public List<String> getGeneIds() {
+        return geneIds;
     }
 
-    public void setFoundGeneIds(List<String> foundGeneIds) {
-        this.foundGeneIds = foundGeneIds;
+    public void setGeneIds(List<String> geneIds) {
+        this.geneIds = geneIds;
     }
 }

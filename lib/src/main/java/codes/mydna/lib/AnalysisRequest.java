@@ -2,7 +2,7 @@ package codes.mydna.lib;
 
 import java.util.List;
 
-public class AnalysisRequest {
+public class AnalysisRequest extends BaseType {
 
     private String dnaId;
     private List<String> enzymeIds;
