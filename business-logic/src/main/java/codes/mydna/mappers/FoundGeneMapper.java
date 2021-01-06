@@ -2,12 +2,18 @@ package codes.mydna.mappers;
 
 import codes.mydna.entities.FoundGeneEntity;
 import codes.mydna.lib.FoundGene;
+import codes.mydna.lib.Gene;
 
 import java.util.stream.Collectors;
 
 public class FoundGeneMapper {
     public static FoundGene fromEntity(FoundGeneEntity entity) {
+        if (entity == null)
+            return null;
+        Gene gene = new Gene();
+        gene.setId(entity.getId());
         FoundGene foundGene = new FoundGene();
+        foundGene.setGene(gene);
         foundGene.setOverlaps(entity.getGeneOverlaps()
                 .stream()
                 .map(GeneOverlapMapper::fromEntity)

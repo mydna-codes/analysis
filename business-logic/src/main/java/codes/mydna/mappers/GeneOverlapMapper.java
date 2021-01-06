@@ -6,6 +6,8 @@ import codes.mydna.lib.GeneOverlap;
 public class GeneOverlapMapper {
 
     public static GeneOverlap fromEntity(GeneOverlapEntity entity){
+        if (entity == null)
+            return null;
         GeneOverlap overlap = new GeneOverlap();
         overlap.setFromIndex(entity.getFromIndex());
         overlap.setToIndex(entity.getToIndex());

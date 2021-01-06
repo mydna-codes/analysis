@@ -6,6 +6,8 @@ import codes.mydna.lib.BaseType;
 public class BaseMapper {
 
     public static void fromEntity(BaseEntity entity, BaseType baseType) {
+        if(entity == null || baseType == null)
+            return;
         baseType.setId(entity.getId());
         baseType.setCreated(entity.getCreated());
         baseType.setLastModified(entity.getLastModified());

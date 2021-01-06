@@ -6,6 +6,8 @@ import codes.mydna.lib.EnzymeCut;
 public class EnzymeCutMapper {
 
     public static EnzymeCut fromEntity(EnzymeCutEntity entity){
+        if (entity == null)
+            return null;
         EnzymeCut enzymeCut = new EnzymeCut();
         enzymeCut.setUpperCut(entity.getUpperCut());
         enzymeCut.setLowerCut(entity.getLowerCut());

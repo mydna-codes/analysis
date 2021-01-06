@@ -21,6 +21,8 @@ public class AnalysisResultMapper {
     }
 
     public static AnalysisResult fromEntity(AnalysisResultEntity entity){
+        if (entity == null)
+            return null;
         AnalysisResult result = new AnalysisResult();
         BaseMapper.fromEntity(entity, result);
         result.setAnalysisName(entity.getAnalysisName());

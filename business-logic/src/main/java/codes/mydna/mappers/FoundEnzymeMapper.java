@@ -1,6 +1,7 @@
 package codes.mydna.mappers;
 
 import codes.mydna.entities.FoundEnzymeEntity;
+import codes.mydna.lib.Enzyme;
 import codes.mydna.lib.FoundEnzyme;
 
 import java.util.stream.Collectors;
@@ -8,7 +9,12 @@ import java.util.stream.Collectors;
 public class FoundEnzymeMapper {
 
     public static FoundEnzyme fromEntity(FoundEnzymeEntity entity) {
+        if (entity == null)
+            return null;
+        Enzyme enzyme = new Enzyme();
+        enzyme.setId(entity.getEnzymeId());
         FoundEnzyme foundEnzyme = new FoundEnzyme();
+        foundEnzyme.setEnzyme(enzyme);
         foundEnzyme.setCuts(entity.getEnzymeCuts()
                 .stream()
                 .map(EnzymeCutMapper::fromEntity)
