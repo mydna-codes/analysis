@@ -1,5 +1,6 @@
 package codes.mydna.services.impl;
 
+import codes.mydna.auth.common.models.User;
 import codes.mydna.clients.grpc.DnaServiceGrpcClient;
 import codes.mydna.clients.grpc.EnzymeServiceGrpcClient;
 import codes.mydna.clients.grpc.GeneServiceGrpcClient;
@@ -45,23 +46,23 @@ public class AnalysisResultServiceImpl implements AnalysisResultService {
                 .stream()
                 .map(AnalysisResultMapper::fromEntityToSummary)
                 .collect(Collectors.toList());
-        Long count = JPAUtils.queryEntitiesCount(em, AnalysisResultEntity.class);
+        Long count = JPAUtils.queryEntitiesCount(em, AnalysisResultEntity.class, qp);
         return new EntityList<>(results, count);
     }
 
     @Override
-    public AnalysisResult getAnalysisResult(String id) {
+    public AnalysisResult getAnalysisResult(String id, User user) {
 
         Assert.fieldNotNull(id, "id");
 
         AnalysisResultEntity entity = getAnalysisResultEntity(id);
-        if(entity == null)
+        if (entity == null)
             throw new NotFoundException(AnalysisResult.class, id);
 
-        TransferEntity<Dna> receivedDna = dnaServiceGrpcClient.getDna(entity.getDnaId());
-        if(receivedDna.getStatus() != Status.OK){
+        TransferEntity<Dna> receivedDna = dnaServiceGrpcClient.getDna(entity.getDnaId(), user);
+        if (receivedDna.getStatus() != Status.OK) {
             // If analysis DNA has been removed, remove analysis
-            if(receivedDna.getStatus() == Status.NOT_FOUND){
+            if (receivedDna.getStatus() == Status.NOT_FOUND) {
                 removeAnalysisResult(id);
             }
             return null;
@@ -76,10 +77,11 @@ public class AnalysisResultServiceImpl implements AnalysisResultService {
         List<Enzyme> enzymes = enzymeServiceGrpcClient.getMultipleEnzymes(entity.getFoundEnzymes()
                 .stream()
                 .map(FoundEnzymeEntity::getEnzymeId)
-                .collect(Collectors.toList()));
+                .collect(Collectors.toList()
+                ), user);
 
-        for(Enzyme e: enzymes){
-            for(FoundEnzyme fe: result.getEnzymes()) {
+        for (Enzyme e : enzymes) {
+            for (FoundEnzyme fe : result.getEnzymes()) {
                 if (fe.getEnzyme().getId().equals(e.getId()))
                     fe.getEnzyme().setSequence(e.getSequence());
             }
@@ -89,10 +91,11 @@ public class AnalysisResultServiceImpl implements AnalysisResultService {
         List<Gene> genes = geneServiceGrpcClient.getMultipleGenes(entity.getFoundGenes()
                 .stream()
                 .map(FoundGeneEntity::getGeneId)
-                .collect(Collectors.toList()));
+                .collect(Collectors.toList()
+                ), user);
 
-        for(Gene g: genes){
-            for(FoundGene fg: result.getGenes()) {
+        for (Gene g : genes) {
+            for (FoundGene fg : result.getGenes()) {
                 if (fg.getGene().getId().equals(g.getId()))
                     fg.getGene().setSequence(g.getSequence());
             }
@@ -106,7 +109,7 @@ public class AnalysisResultServiceImpl implements AnalysisResultService {
         Assert.objectNotNull(result.getDna(), Dna.class);
 
         // Prevent saving analysis that are no OK
-        if(result.getStatus() != Status.OK) {
+        if (result.getStatus() != Status.OK) {
             return null;
         }
 
@@ -133,7 +136,7 @@ public class AnalysisResultServiceImpl implements AnalysisResultService {
         return true;
     }
 
-    private AnalysisResultEntity getAnalysisResultEntity(String id){
+    private AnalysisResultEntity getAnalysisResultEntity(String id) {
         if (id == null)
             return null;
         return em.find(AnalysisResultEntity.class, id);

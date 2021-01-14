@@ -1,5 +1,6 @@
 package codes.mydna.services;
 
+import codes.mydna.auth.common.models.User;
 import codes.mydna.lib.AnalysisRequest;
 import codes.mydna.lib.AnalysisResult;
 
@@ -8,6 +9,6 @@ import codes.mydna.lib.AnalysisResult;
  */
 public interface AnalysisService {
 
-    AnalysisResult analyze(AnalysisRequest request);
+    AnalysisResult analyze(AnalysisRequest request, User user);
 
 }

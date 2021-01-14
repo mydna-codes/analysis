@@ -1,9 +1,12 @@
 package codes.mydna.clients.grpc;
 
+import codes.mydna.auth.common.models.User;
 import codes.mydna.lib.Dna;
 import codes.mydna.lib.Sequence;
+import codes.mydna.lib.grpc.CommonProto;
 import codes.mydna.lib.grpc.DnaServiceGrpc;
 import codes.mydna.lib.grpc.DnaServiceProto;
+import codes.mydna.lib.mappers.grpc.GrpcUserMapper;
 import codes.mydna.status.Status;
 import codes.mydna.utils.TransferEntity;
 import com.kumuluz.ee.grpc.client.GrpcChannelConfig;
@@ -35,10 +38,12 @@ public class DnaServiceGrpcClient {
         }
     }
 
-    public TransferEntity<Dna> getDna(String id){
+    public TransferEntity<Dna> getDna(String id, User user){
+
 
         DnaServiceProto.DnaRequest request = DnaServiceProto.DnaRequest.newBuilder()
                 .setId(id)
+                .setUser(GrpcUserMapper.toGrpcUser(user))
                 .build();
 
         DnaServiceProto.DnaResponse response;

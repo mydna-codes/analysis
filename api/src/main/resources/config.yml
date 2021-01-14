@@ -64,3 +64,10 @@ kumuluzee:
           startup:
             dropAll: false
             update: true
+
+keycloak:
+  realm: not_set
+  auth-server-url: not_set
+  client-id: not_set
+  auth:
+    client-secret: not_set

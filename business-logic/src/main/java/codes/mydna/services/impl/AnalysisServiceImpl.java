@@ -1,5 +1,6 @@
 package codes.mydna.services.impl;
 
+import codes.mydna.auth.common.models.User;
 import codes.mydna.clients.grpc.DnaServiceGrpcClient;
 import codes.mydna.clients.grpc.EnzymeServiceGrpcClient;
 import codes.mydna.clients.grpc.GeneServiceGrpcClient;
@@ -43,7 +44,7 @@ public class AnalysisServiceImpl implements AnalysisService {
     private AnalysisResultService analysisResultService;
 
     @Override
-    public AnalysisResult analyze(AnalysisRequest request) {
+    public AnalysisResult analyze(AnalysisRequest request, User user) {
 
         AnalysisResult result = new AnalysisResult();
 
@@ -52,7 +53,7 @@ public class AnalysisServiceImpl implements AnalysisService {
         // Initialize total execution timer
         long totalExecTimer = System.currentTimeMillis();
 
-        TransferEntity<Dna> receivedDna = dnaServiceGrpcClient.getDna(request.getDnaId());
+        TransferEntity<Dna> receivedDna = dnaServiceGrpcClient.getDna(request.getDnaId(), user);
         result.setStatus(receivedDna.getStatus());
 
         // Dna sequence response validation
@@ -71,10 +72,10 @@ public class AnalysisServiceImpl implements AnalysisService {
         // Start analysis timer
         long analysisTimer = System.currentTimeMillis();
 
-        List<Enzyme> receivedEnzymes = enzymeServiceGrpcClient.getMultipleEnzymes(request.getEnzymeIds());
+        List<Enzyme> receivedEnzymes = enzymeServiceGrpcClient.getMultipleEnzymes(request.getEnzymeIds(), user);
         result.setEnzymes(findEnzymes(sequence, receivedEnzymes));
 
-        List<Gene> receivedGenes = geneServiceGrpcClient.getMultipleGenes(request.getGeneIds());
+        List<Gene> receivedGenes = geneServiceGrpcClient.getMultipleGenes(request.getGeneIds(), user);
         result.setGenes(findGenes(sequence, receivedGenes));
 
         // Stop timers

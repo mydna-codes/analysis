@@ -1,5 +1,6 @@
 package codes.mydna.clients.grpc;
 
+import codes.mydna.auth.common.models.User;
 import codes.mydna.lib.Enzyme;
 import codes.mydna.lib.Sequence;
 import codes.mydna.lib.grpc.EnzymeServiceGrpc;
@@ -39,7 +40,7 @@ public class EnzymeServiceGrpcClient {
         }
     }
 
-    public List<Enzyme> getMultipleEnzymes(List<String> ids){
+    public List<Enzyme> getMultipleEnzymes(List<String> ids, User user){
 
         // If ids are not passed, don't call grpc and return empty list
         if(ids == null || ids.isEmpty()){
