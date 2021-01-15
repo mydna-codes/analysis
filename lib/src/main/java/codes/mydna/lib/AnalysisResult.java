@@ -1,18 +1,28 @@
 package codes.mydna.lib;
 
-import codes.mydna.status.Status;
+import codes.mydna.lib.enums.Status;
 
 import java.util.List;
 
 public class AnalysisResult extends BaseType {
 
+    private Status status;
+
     private String analysisName;
     private int totalExecutionTime;
     private int analysisExecutionTime;
+
     private Dna dna;
-    private Status status;
     private List<FoundEnzyme> enzymes;
     private List<FoundGene> genes;
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }
 
     public String getAnalysisName() {
         return analysisName;
@@ -44,14 +54,6 @@ public class AnalysisResult extends BaseType {
 
     public void setDna(Dna dna) {
         this.dna = dna;
-    }
-
-    public Status getStatus() {
-        return status;
-    }
-
-    public void setStatus(Status status) {
-        this.status = status;
     }
 
     public List<FoundEnzyme> getEnzymes() {

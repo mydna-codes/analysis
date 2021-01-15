@@ -4,14 +4,14 @@ import codes.mydna.auth.common.models.User;
 import codes.mydna.clients.grpc.DnaServiceGrpcClient;
 import codes.mydna.clients.grpc.EnzymeServiceGrpcClient;
 import codes.mydna.clients.grpc.GeneServiceGrpcClient;
+import codes.mydna.clients.grpc.models.CheckedEntity;
 import codes.mydna.lib.*;
 import codes.mydna.lib.enums.Orientation;
 import codes.mydna.lib.enums.SequenceType;
+import codes.mydna.lib.enums.Status;
 import codes.mydna.lib.util.BasePairUtil;
 import codes.mydna.services.AnalysisResultService;
 import codes.mydna.services.AnalysisService;
-import codes.mydna.status.Status;
-import codes.mydna.utils.TransferEntity;
 import codes.mydna.validation.Assert;
 
 import javax.annotation.PostConstruct;
@@ -53,7 +53,7 @@ public class AnalysisServiceImpl implements AnalysisService {
         // Initialize total execution timer
         long totalExecTimer = System.currentTimeMillis();
 
-        TransferEntity<Dna> receivedDna = dnaServiceGrpcClient.getDna(request.getDnaId(), user);
+        CheckedEntity<Dna> receivedDna = dnaServiceGrpcClient.getDna(request.getDnaId(), user);
         result.setStatus(receivedDna.getStatus());
 
         // Dna sequence response validation

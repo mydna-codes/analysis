@@ -3,7 +3,7 @@ package codes.mydna.mappers;
 import codes.mydna.entities.AnalysisResultEntity;
 import codes.mydna.lib.AnalysisResult;
 import codes.mydna.lib.AnalysisResultSummary;
-import codes.mydna.status.Status;
+import codes.mydna.lib.enums.Status;
 
 import java.util.stream.Collectors;
 
@@ -28,7 +28,7 @@ public class AnalysisResultMapper {
         result.setAnalysisName(entity.getAnalysisName());
         result.setAnalysisExecutionTime(entity.getAnalysisExecutionTime());
         result.setTotalExecutionTime(entity.getTotalExecutionTime());
-        result.setStatus(Status.OK); // Otherwise it there would be no results
+        result.setStatus(Status.OK); // Otherwise there would be no results
         result.setEnzymes(entity.getFoundEnzymes()
                 .stream()
                 .map(FoundEnzymeMapper::fromEntity)

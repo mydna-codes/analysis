@@ -2,11 +2,9 @@ package codes.mydna.clients.grpc;
 
 import codes.mydna.auth.common.models.User;
 import codes.mydna.lib.Gene;
-import codes.mydna.lib.Sequence;
 import codes.mydna.lib.grpc.GeneServiceGrpc;
 import codes.mydna.lib.grpc.GeneServiceProto;
-import codes.mydna.status.Status;
-import codes.mydna.utils.TransferEntity;
+import codes.mydna.lib.grpc.mappers.GrpcGeneMapper;
 import com.kumuluz.ee.grpc.client.GrpcChannelConfig;
 import com.kumuluz.ee.grpc.client.GrpcChannels;
 import com.kumuluz.ee.grpc.client.GrpcClient;
@@ -33,8 +31,11 @@ public class GeneServiceGrpcClient {
             GrpcChannels clientPool = GrpcChannels.getInstance();
             GrpcChannelConfig config = clientPool.getGrpcClientConfig("sequence-bank-grpc-client");
             GrpcClient client = new GrpcClient(config);
+
             geneServiceBlockingStub = GeneServiceGrpc.newBlockingStub(client.getChannel()).withWaitForReady();
+
             LOG.info("Grpc client " + GeneServiceGrpcClient.class.getSimpleName() + " initialized.");
+
         } catch (SSLException e) {
             LOG.warning(e.getMessage());
         }
@@ -51,36 +52,21 @@ public class GeneServiceGrpcClient {
                 .addAllId(ids)
                 .build();
 
-        GeneServiceProto.MultipleGenesResponse response;
         try {
-            response = geneServiceBlockingStub.getMultipleGenes(request);
+            return geneServiceBlockingStub.getMultipleGenes(request)
+                    .getGeneList()
+                    .stream()
+                    .map(GrpcGeneMapper::fromGrpcGene)
+                    .filter(Objects::nonNull)
+                    .collect(Collectors.toList());
+
         }catch (Exception e) {
+
             LOG.severe("Failed to connect to gRPC client: " + e.getMessage());
             return new ArrayList<>();
         }
 
-        return response.getGeneList()
-                .stream()
-                .map(this::fromProto)
-                .filter(Objects::nonNull)
-                .collect(Collectors.toList());
-    }
 
-    private Gene fromProto(GeneServiceProto.Gene protoGene){
-
-        Status status = Status.valueOf(protoGene.getEntityStatus());
-        if(status != Status.OK)
-            return null;
-
-        Gene gene = new Gene();
-        gene.setId(protoGene.getBaseSequenceInfo().getId());
-        gene.setName(protoGene.getBaseSequenceInfo().getName());
-
-        Sequence sequence = new Sequence();
-        sequence.setValue(protoGene.getSequence().getValue());
-        gene.setSequence(sequence);
-
-        return gene;
     }
 
 }

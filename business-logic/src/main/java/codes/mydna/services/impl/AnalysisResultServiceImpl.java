@@ -4,17 +4,17 @@ import codes.mydna.auth.common.models.User;
 import codes.mydna.clients.grpc.DnaServiceGrpcClient;
 import codes.mydna.clients.grpc.EnzymeServiceGrpcClient;
 import codes.mydna.clients.grpc.GeneServiceGrpcClient;
+import codes.mydna.clients.grpc.models.CheckedEntity;
 import codes.mydna.entities.AnalysisResultEntity;
 import codes.mydna.entities.FoundEnzymeEntity;
 import codes.mydna.entities.FoundGeneEntity;
 import codes.mydna.exceptions.NotFoundException;
 import codes.mydna.lib.*;
+import codes.mydna.lib.enums.Status;
 import codes.mydna.mappers.AnalysisResultMapper;
 import codes.mydna.mappers.BaseMapper;
 import codes.mydna.services.AnalysisResultService;
-import codes.mydna.status.Status;
 import codes.mydna.utils.EntityList;
-import codes.mydna.utils.TransferEntity;
 import codes.mydna.validation.Assert;
 import com.kumuluz.ee.rest.beans.QueryParameters;
 import com.kumuluz.ee.rest.utils.JPAUtils;
@@ -59,10 +59,10 @@ public class AnalysisResultServiceImpl implements AnalysisResultService {
         if (entity == null)
             throw new NotFoundException(AnalysisResult.class, id);
 
-        TransferEntity<Dna> receivedDna = dnaServiceGrpcClient.getDna(entity.getDnaId(), user);
+        CheckedEntity<Dna> receivedDna = dnaServiceGrpcClient.getDna(entity.getDnaId(), user);
         if (receivedDna.getStatus() != Status.OK) {
             // If analysis DNA has been removed, remove analysis
-            if (receivedDna.getStatus() == Status.NOT_FOUND) {
+            if (receivedDna.getStatus() == Status.ENTITY_NOT_FOUND) {
                 removeAnalysisResult(id);
             }
             return null;

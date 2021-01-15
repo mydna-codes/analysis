@@ -1,17 +1,19 @@
 package codes.mydna.clients.grpc;
 
 import codes.mydna.auth.common.models.User;
+import codes.mydna.clients.grpc.models.CheckedEntity;
+import codes.mydna.exceptions.RestException;
 import codes.mydna.lib.Dna;
-import codes.mydna.lib.Sequence;
-import codes.mydna.lib.grpc.CommonProto;
+import codes.mydna.lib.enums.Status;
 import codes.mydna.lib.grpc.DnaServiceGrpc;
 import codes.mydna.lib.grpc.DnaServiceProto;
-import codes.mydna.lib.mappers.grpc.GrpcUserMapper;
-import codes.mydna.status.Status;
-import codes.mydna.utils.TransferEntity;
+import codes.mydna.lib.grpc.mappers.GrpcDnaMapper;
+import codes.mydna.lib.grpc.mappers.GrpcUserMapper;
 import com.kumuluz.ee.grpc.client.GrpcChannelConfig;
 import com.kumuluz.ee.grpc.client.GrpcChannels;
 import com.kumuluz.ee.grpc.client.GrpcClient;
+import io.grpc.StatusException;
+import org.hibernate.annotations.common.util.impl.Log;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
@@ -26,50 +28,53 @@ public class DnaServiceGrpcClient {
     private DnaServiceGrpc.DnaServiceBlockingStub dnaServiceBlockingStub;
 
     @PostConstruct
-    public void init(){
+    public void init() {
         try {
             GrpcChannels clientPool = GrpcChannels.getInstance();
             GrpcChannelConfig config = clientPool.getGrpcClientConfig("sequence-bank-grpc-client");
             GrpcClient client = new GrpcClient(config);
+
             dnaServiceBlockingStub = DnaServiceGrpc.newBlockingStub(client.getChannel()).withWaitForReady();
+
             LOG.info("Grpc client " + DnaServiceGrpcClient.class.getSimpleName() + " initialized.");
+
         } catch (SSLException e) {
             LOG.warning(e.getMessage());
         }
     }
 
-    public TransferEntity<Dna> getDna(String id, User user){
+    public CheckedEntity<Dna> getDna(String id, User user) {
 
+        CheckedEntity<Dna> entity = new CheckedEntity<>();
 
         DnaServiceProto.DnaRequest request = DnaServiceProto.DnaRequest.newBuilder()
                 .setId(id)
                 .setUser(GrpcUserMapper.toGrpcUser(user))
                 .build();
 
-        DnaServiceProto.DnaResponse response;
         try {
+            DnaServiceProto.DnaResponse response;
             response = dnaServiceBlockingStub.getDna(request);
+
+            if (response.hasDna()) {
+                Dna dna = GrpcDnaMapper.fromGrpcDna(response.getDna());
+                entity.setEntity(dna);
+                entity.setStatus(Status.OK);
+            } else {
+                entity.setStatus(Status.ENTITY_NOT_FOUND);
+            }
+            return entity;
+
         } catch (Exception e) {
-            LOG.severe("Failed to connect to gRPC client: " + e.getMessage());
-            return null;
+
+            if (e.getMessage().equals(io.grpc.Status.NOT_FOUND.getCode().name())) {
+                entity.setStatus(Status.ENTITY_NOT_FOUND);
+            } else {
+                entity.setStatus(Status.INTERNAL_SERVER_ERROR);
+            }
+            return entity;
         }
 
-        TransferEntity<Dna> entity = new TransferEntity<>();
-        entity.setStatus(Status.valueOf(response.getDna().getEntityStatus()));
-        if(response.hasDna()) {
-
-            Dna dna = new Dna();
-            dna.setId(response.getDna().getBaseSequenceInfo().getId());
-            dna.setName(response.getDna().getBaseSequenceInfo().getName());
-
-            Sequence sequence = new Sequence();
-            sequence.setValue(response.getDna().getSequence().getValue());
-            dna.setSequence(sequence);
-
-            entity.setEntity(dna);
-        }
-
-        return entity;
     }
 
 }
