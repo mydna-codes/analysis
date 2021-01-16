@@ -96,12 +96,6 @@ pipeline {
                         .kube/analysis.yaml > .kube/analysis.tmp
                     """
                     sh "mv -f .kube/analysis.tmp .kube/analysis.yaml"
-
-                    sh """ \
-                    sed -e 's+{{NAMESPACE}}+$environment.namespace+g' \
-                        .kube/analysis-db.yaml > .kube/analysis-db.tmp
-                    """
-                    sh "mv -f .kube/analysis-db.tmp .kube/analysis-db.yaml"
                 }
             }
         }
@@ -120,7 +114,7 @@ pipeline {
                     }
                 }
                 withKubeConfig([credentialsId: KUBERNETES_CREDENTIALS]) {
-                    sh "kubectl apply -f .kube/"
+                    sh "kubectl apply -f .kube/analysis.yaml"
                 }
             }
         }

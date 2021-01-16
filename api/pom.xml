@@ -67,9 +67,10 @@
             <groupId>com.kumuluz.ee.graphql</groupId>
             <artifactId>kumuluzee-graphql-ui</artifactId>
         </dependency>
+        <!-- KumuluzEE (Streaming - Kafka) -->
         <dependency>
-            <groupId>com.kumuluz.ee.migrations</groupId>
-            <artifactId>kumuluzee-migrations-liquibase</artifactId>
+            <groupId>com.kumuluz.ee.streaming</groupId>
+            <artifactId>kumuluzee-streaming-kafka</artifactId>
         </dependency>
     </dependencies>
 

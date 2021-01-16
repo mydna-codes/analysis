@@ -1,6 +1,7 @@
 package codes.mydna.services.impl;
 
 import codes.mydna.auth.common.models.User;
+import codes.mydna.clients.grpc.AnalysisResultGrpcClient;
 import codes.mydna.clients.grpc.DnaServiceGrpcClient;
 import codes.mydna.clients.grpc.EnzymeServiceGrpcClient;
 import codes.mydna.clients.grpc.GeneServiceGrpcClient;
@@ -10,7 +11,6 @@ import codes.mydna.lib.enums.Orientation;
 import codes.mydna.lib.enums.SequenceType;
 import codes.mydna.lib.enums.Status;
 import codes.mydna.lib.util.BasePairUtil;
-import codes.mydna.services.AnalysisResultService;
 import codes.mydna.services.AnalysisService;
 import codes.mydna.validation.Assert;
 
@@ -41,7 +41,7 @@ public class AnalysisServiceImpl implements AnalysisService {
     private GeneServiceGrpcClient geneServiceGrpcClient;
 
     @Inject
-    private AnalysisResultService analysisResultService;
+    private AnalysisResultGrpcClient analysisResultGrpcClient;
 
     @Override
     public AnalysisResult analyze(AnalysisRequest request, User user) {
@@ -82,8 +82,11 @@ public class AnalysisServiceImpl implements AnalysisService {
         result.setAnalysisExecutionTime((int) (System.currentTimeMillis() - analysisTimer));
         result.setTotalExecutionTime((int) (System.currentTimeMillis() - totalExecTimer));
 
-        analysisResultService.insertAnalysisResult(result);
+        if(user != null) {
+            return analysisResultGrpcClient.insertAnalysisResult(result, user);
+        }
 
+        result.setStatus(Status.UNSAVED);
         return result;
     }
 

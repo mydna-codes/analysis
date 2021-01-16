@@ -2,7 +2,6 @@ package codes.mydna.clients.grpc;
 
 import codes.mydna.auth.common.models.User;
 import codes.mydna.clients.grpc.models.CheckedEntity;
-import codes.mydna.exceptions.RestException;
 import codes.mydna.lib.Dna;
 import codes.mydna.lib.enums.Status;
 import codes.mydna.lib.grpc.DnaServiceGrpc;
@@ -12,8 +11,6 @@ import codes.mydna.lib.grpc.mappers.GrpcUserMapper;
 import com.kumuluz.ee.grpc.client.GrpcChannelConfig;
 import com.kumuluz.ee.grpc.client.GrpcChannels;
 import com.kumuluz.ee.grpc.client.GrpcClient;
-import io.grpc.StatusException;
-import org.hibernate.annotations.common.util.impl.Log;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;

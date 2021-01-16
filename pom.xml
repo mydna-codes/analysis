@@ -7,9 +7,7 @@
     <groupId>codes.mydna</groupId>
     <artifactId>analysis</artifactId>
     <version>1.0.0-SNAPSHOT</version>
-    <modules>
-        <module>entities</module>
-    </modules>
+
     <packaging>pom</packaging>
 
     <properties>
@@ -31,6 +29,7 @@
         <kumuluzee-health.version>2.3.0</kumuluzee-health.version>
         <kumuluzee-migrations-liquibase.version>1.0.1-SNAPSHOT</kumuluzee-migrations-liquibase.version>
         <kumuluzee-security.version>1.2.0</kumuluzee-security.version>
+        <kumuluzee-streaming.version>1.2.1</kumuluzee-streaming.version>
 
         <keycloak.version>11.0.0</keycloak.version>
 
@@ -40,6 +39,7 @@
         <!-- mydnacodes -->
         <mydnacodes-rest-lib.version>1.0.2-SNAPSHOT</mydnacodes-rest-lib.version>
         <mydnacodes-auth-lib.version>1.0.0-SNAPSHOT</mydnacodes-auth-lib.version>
+        <mydnacodes-analysis-result-lib.version>1.0.0-SNAPSHOT</mydnacodes-analysis-result-lib.version>
         <mydnacodes-sequence-bank-lib.version>1.0.0-SNAPSHOT</mydnacodes-sequence-bank-lib.version>
 
     </properties>
@@ -50,11 +50,6 @@
             <dependency>
                 <groupId>codes.mydna</groupId>
                 <artifactId>business-logic</artifactId>
-                <version>1.0.0-SNAPSHOT</version>
-            </dependency>
-            <dependency>
-                <groupId>codes.mydna</groupId>
-                <artifactId>entities</artifactId>
                 <version>1.0.0-SNAPSHOT</version>
             </dependency>
             <dependency>
@@ -119,6 +114,13 @@
                 <version>${kumuluzee-grpc.version}</version>
             </dependency>
 
+            <!-- KumuluzEE (Streaming - Kafka) -->
+            <dependency>
+                <groupId>com.kumuluz.ee.streaming</groupId>
+                <artifactId>kumuluzee-streaming-kafka</artifactId>
+                <version>${kumuluzee-streaming.version}</version>
+            </dependency>
+
             <!-- KumuluzEE (CORES) -->
             <dependency>
                 <groupId>com.kumuluz.ee.cors</groupId>
@@ -138,42 +140,12 @@
                 <version>${kumuluzee-openapi-mp.version}</version>
             </dependency>
 
-<!--            <dependency>-->
-<!--                <groupId>org.keycloak</groupId>-->
-<!--                <artifactId>keycloak-jetty94-adapter</artifactId>-->
-<!--                <version>${keycloak.version}</version>-->
-<!--            </dependency>-->
-<!--            <dependency>-->
-<!--                <groupId>com.kumuluz.ee.security</groupId>-->
-<!--                <artifactId>kumuluzee-security-keycloak</artifactId>-->
-<!--                <version>${kumuluzee-security.version}</version>-->
-<!--            </dependency>-->
-
-            <!-- PostreSQL -->
-            <dependency>
-                <groupId>org.postgresql</groupId>
-                <artifactId>postgresql</artifactId>
-                <version>${postgresql.version}</version>
-            </dependency>
-
-            <!-- Liquibase -->
-            <dependency>
-                <groupId>com.kumuluz.ee.migrations</groupId>
-                <artifactId>kumuluzee-migrations-liquibase</artifactId>
-                <version>${kumuluzee-migrations-liquibase.version}</version>
-            </dependency>
-
             <!-- mydnacodes -->
             <dependency>
                 <groupId>codes.mydna</groupId>
                 <artifactId>rest-lib</artifactId>
                 <version>${mydnacodes-rest-lib.version}</version>
             </dependency>
-<!--            <dependency>-->
-<!--                <groupId>codes.mydna</groupId>-->
-<!--                <artifactId>auth-common</artifactId>-->
-<!--                <version>${mydnacodes-auth-lib.version}</version>-->
-<!--            </dependency>-->
             <dependency>
                 <groupId>codes.mydna</groupId>
                 <artifactId>auth-keycloak</artifactId>
@@ -183,6 +155,11 @@
                 <groupId>codes.mydna</groupId>
                 <artifactId>sequence-bank-lib-v1</artifactId>
                 <version>${mydnacodes-sequence-bank-lib.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>codes.mydna</groupId>
+                <artifactId>analysis-result-lib-v1</artifactId>
+                <version>${mydnacodes-analysis-result-lib.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
