@@ -1,6 +1,6 @@
 # analysis
 
-[![Build Status](https://jenkins.din-cloud.com/buildStatus/icon?job=mydnacodes%2Fanalysis%2Fmaster&subject=CI/CD)](https://jenkins.din-cloud.com/job/mydnacodes/job/analysis/job/master/)
+[![Build Status](https://jenkins.din-cloud.com/buildStatus/icon?job=mydnacodes%2Fanalysis-service%2Fmaster&subject=CI/CD)](https://jenkins.din-cloud.com/job/mydnacodes/job/analysis-service/job/master/)
 
 ### Library
 ```xml
