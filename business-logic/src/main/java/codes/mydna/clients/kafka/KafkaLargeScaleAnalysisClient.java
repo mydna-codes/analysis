@@ -47,7 +47,7 @@ public class KafkaLargeScaleAnalysisClient {
         LOG.info("RunLargeScaleAnalysis -> Creating producer...");
         ProducerRecord<String, String> record = new ProducerRecord<>(
                 "large_scale_analysis",
-                UUID.randomUUID().toString(),
+                "key",
                 jsonRequest);
         LOG.info("RunLargeScaleAnalysis -> Producer created");
 
