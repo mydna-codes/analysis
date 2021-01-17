@@ -66,9 +66,10 @@ public class AnalysisServiceImpl implements AnalysisService {
         if (receivedDna.getStatus() != Status.OK) {
 
             // LARGE_SCALE -> Send request to large scale analysis service
-            if(receivedDna.getStatus() == Status.LARGE_SCALE)
+            if(receivedDna.getStatus() == Status.LARGE_SCALE) {
                 LOG.info("Redirecting request to large scale service...");
                 largeScaleAnalysisClient.runLargeScaleAnalysis(request, user);
+            }
 
             return result;
         }
