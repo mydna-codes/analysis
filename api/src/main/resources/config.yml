@@ -44,6 +44,15 @@ kumuluzee:
         buffer-memory: 33554432
         key-serializer: org.apache.kafka.common.serialization.StringSerializer
         value-serializer: org.apache.kafka.common.serialization.StringSerializer
+  health:
+    servlet:
+      mapping: /health/
+      enabled: true
+    checks:
+      kafka-health-check:
+        bootstrap-servers: localhost:9091
+        minimum-available-nodes: 1
+        request-timeout-ms: 1000
 
 keycloak:
   realm: not_set
