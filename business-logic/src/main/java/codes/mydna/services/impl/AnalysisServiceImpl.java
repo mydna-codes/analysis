@@ -102,7 +102,7 @@ public class AnalysisServiceImpl implements AnalysisService {
 
         if(user != null) {
             LOG.info("Inserting analysis result...");
-            //return analysisResultGrpcClient.insertAnalysisResult(result, user);
+            return analysisResultGrpcClient.insertAnalysisResult(result, user);
         }
 
         result.setStatus(Status.UNSAVED);

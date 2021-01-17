@@ -12,7 +12,6 @@ import org.apache.kafka.clients.producer.ProducerRecord;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.ws.rs.InternalServerErrorException;
-import java.util.UUID;
 import java.util.logging.Logger;
 
 @ApplicationScoped
