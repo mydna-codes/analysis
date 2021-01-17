@@ -52,10 +52,7 @@ public class DnaServiceGrpcClient {
 
         try {
             DnaServiceProto.DnaResponse response;
-            LOG.info("Requesting DNA with id " + id);
             response = dnaServiceBlockingStub.getDna(request);
-            LOG.info("DNA response received");
-
 
             if (response.hasDna()) {
                 Dna dna = GrpcDnaMapper.fromGrpcDna(response.getDna());
@@ -64,7 +61,6 @@ public class DnaServiceGrpcClient {
             } else {
                 entity.setStatus(Status.ENTITY_NOT_FOUND);
             }
-            LOG.info("Returning DNA OK");
             return entity;
 
         } catch (Exception e) {

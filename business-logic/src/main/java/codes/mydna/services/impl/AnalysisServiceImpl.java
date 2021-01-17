@@ -47,7 +47,6 @@ public class AnalysisServiceImpl implements AnalysisService {
     @Inject
     private KafkaLargeScaleAnalysisClient largeScaleAnalysisClient;
 
-
     @Override
     public AnalysisResult analyze(AnalysisRequest request, User user) {
 
@@ -61,20 +60,16 @@ public class AnalysisServiceImpl implements AnalysisService {
         CheckedEntity<Dna> receivedDna = dnaServiceGrpcClient.getDna(request.getDnaId(), user);
         result.setStatus(receivedDna.getStatus());
 
-
         // Dna sequence response validation
         if (receivedDna.getStatus() != Status.OK) {
 
             // LARGE_SCALE -> Send request to large scale analysis service
             if(receivedDna.getStatus() == Status.LARGE_SCALE) {
-                LOG.info("Redirecting request to large scale service...");
                 largeScaleAnalysisClient.runLargeScaleAnalysis(request, user);
             }
 
             return result;
         }
-
-        LOG.info("Analyzing DNA with id: " + receivedDna.getEntity().getId());
 
         result.setDna(receivedDna.getEntity());
         String sequence = receivedDna.getEntity().getSequence().getValue();
@@ -87,21 +82,16 @@ public class AnalysisServiceImpl implements AnalysisService {
         // Start analysis timer
         long analysisTimer = System.currentTimeMillis();
 
-        LOG.info("Requesting enzymes...");
         List<Enzyme> receivedEnzymes = enzymeServiceGrpcClient.getMultipleEnzymes(request.getEnzymeIds(), user);
         result.setEnzymes(findEnzymes(sequence, receivedEnzymes));
-        LOG.info("Enzymes received: " + receivedEnzymes.size());
-        LOG.info("Requesting genes...");
         List<Gene> receivedGenes = geneServiceGrpcClient.getMultipleGenes(request.getGeneIds(), user);
         result.setGenes(findGenes(sequence, receivedGenes));
-        LOG.info("Genes received: " + receivedGenes.size());
 
         // Stop timers
         result.setAnalysisExecutionTime((int) (System.currentTimeMillis() - analysisTimer));
         result.setTotalExecutionTime((int) (System.currentTimeMillis() - totalExecTimer));
 
         if(user != null) {
-            LOG.info("Inserting analysis result...");
             return analysisResultGrpcClient.insertAnalysisResult(result, user);
         }
 
