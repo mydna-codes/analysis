@@ -67,10 +67,13 @@ public class AnalysisServiceImpl implements AnalysisService {
 
             // LARGE_SCALE -> Send request to large scale analysis service
             if(receivedDna.getStatus() == Status.LARGE_SCALE)
+                LOG.info("Redirecting request to large scale service...");
                 largeScaleAnalysisClient.runLargeScaleAnalysis(request, user);
 
             return result;
         }
+
+        LOG.info("Analyzing DNA with id: " + receivedDna.getEntity().getId());
 
         result.setDna(receivedDna.getEntity());
         String sequence = receivedDna.getEntity().getSequence().getValue();
@@ -83,18 +86,22 @@ public class AnalysisServiceImpl implements AnalysisService {
         // Start analysis timer
         long analysisTimer = System.currentTimeMillis();
 
+        LOG.info("Requesting enzymes...");
         List<Enzyme> receivedEnzymes = enzymeServiceGrpcClient.getMultipleEnzymes(request.getEnzymeIds(), user);
         result.setEnzymes(findEnzymes(sequence, receivedEnzymes));
-
+        LOG.info("Enzymes received: " + receivedEnzymes.size());
+        LOG.info("Requesting genes...");
         List<Gene> receivedGenes = geneServiceGrpcClient.getMultipleGenes(request.getGeneIds(), user);
         result.setGenes(findGenes(sequence, receivedGenes));
+        LOG.info("Genes received: " + receivedGenes.size());
 
         // Stop timers
         result.setAnalysisExecutionTime((int) (System.currentTimeMillis() - analysisTimer));
         result.setTotalExecutionTime((int) (System.currentTimeMillis() - totalExecTimer));
 
         if(user != null) {
-            return analysisResultGrpcClient.insertAnalysisResult(result, user);
+            LOG.info("Inserting analysis result...");
+            //return analysisResultGrpcClient.insertAnalysisResult(result, user);
         }
 
         result.setStatus(Status.UNSAVED);

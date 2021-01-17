@@ -2,7 +2,6 @@ package codes.mydna.api.resources.graphql;
 
 import codes.mydna.auth.common.models.User;
 import codes.mydna.auth.keycloak.KeycloakContext;
-import codes.mydna.clients.kafka.KafkaLargeScaleAnalysisClient;
 import codes.mydna.lib.AnalysisRequest;
 import codes.mydna.lib.AnalysisResult;
 import codes.mydna.services.AnalysisService;

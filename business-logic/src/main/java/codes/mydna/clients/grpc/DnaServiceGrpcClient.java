@@ -42,17 +42,20 @@ public class DnaServiceGrpcClient {
 
     public CheckedEntity<Dna> getDna(String id, User user) {
 
-        CheckedEntity<Dna> entity = new CheckedEntity<>();
-
         DnaServiceProto.DnaRequest request = DnaServiceProto.DnaRequest.newBuilder()
                 .setServiceType(DnaServiceProto.DnaRequest.ServiceType.NORMAL)
                 .setId(id)
                 .setUser(GrpcUserMapper.toGrpcUser(user))
                 .build();
 
+        CheckedEntity<Dna> entity = new CheckedEntity<>();
+
         try {
             DnaServiceProto.DnaResponse response;
+            LOG.info("Requesting DNA with id " + id);
             response = dnaServiceBlockingStub.getDna(request);
+            LOG.info("DNA response received");
+
 
             if (response.hasDna()) {
                 Dna dna = GrpcDnaMapper.fromGrpcDna(response.getDna());
@@ -61,6 +64,7 @@ public class DnaServiceGrpcClient {
             } else {
                 entity.setStatus(Status.ENTITY_NOT_FOUND);
             }
+            LOG.info("Returning DNA OK");
             return entity;
 
         } catch (Exception e) {
