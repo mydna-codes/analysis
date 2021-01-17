@@ -110,7 +110,6 @@ pipeline {
                         }
                     } catch (Exception e) {
                         echo "Previous deployment has not been removed."
-                        echo e.getMessage()
                     }
                 }
                 withKubeConfig([credentialsId: KUBERNETES_CREDENTIALS]) {
