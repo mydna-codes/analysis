@@ -26,25 +26,40 @@ public class KafkaLargeScaleAnalysisClient {
 
     public void runLargeScaleAnalysis(AnalysisRequest analysisRequest, User user){
 
+        LOG.info("RunLargeScaleAnalysis -> Received request...");
+
         LargeScaleAnalysisRequest request = new LargeScaleAnalysisRequest();
         request.setAnalysisRequest(analysisRequest);
         request.setUser(user);
+        LOG.info("RunLargeScaleAnalysis -> Created LargeScaleAnalysisRequest");
 
         String jsonRequest;
         try {
+            LOG.info("RunLargeScaleAnalysis -> Converting request to json...");
             ObjectMapper mapper = new ObjectMapper();
             jsonRequest = mapper.writeValueAsString(request);
+            LOG.info("RunLargeScaleAnalysis -> Converted");
         } catch (JsonProcessingException e) {
-            LOG.severe("Failed to serialize email object!");
-            throw new InternalServerErrorException("Failed to serialize email object!");
+            LOG.severe("Failed to serialize AnalysisResult object!");
+            throw new InternalServerErrorException("Failed to serialize AnalysisResult object!");
         }
 
+        LOG.info("RunLargeScaleAnalysis -> Creating producer...");
         ProducerRecord<String, String> record = new ProducerRecord<>(
                 "large_scale_analysis",
                 UUID.randomUUID().toString(),
                 jsonRequest);
+        LOG.info("RunLargeScaleAnalysis -> Producer created");
 
-        producer.send(record, (metadata, e) -> { if (e != null) LOG.severe(e.getMessage()); });
+        LOG.info("RunLargeScaleAnalysis -> Sending message...");
+        producer.send(record, (metadata, e) -> {
+            if (e != null)
+                LOG.severe(e.getMessage());
+            else
+                LOG.info("Message successfully sent");
+        });
+        LOG.info("RunLargeScaleAnalysis -> Sending message...");
+
     }
 
 }
