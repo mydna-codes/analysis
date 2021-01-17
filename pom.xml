@@ -25,7 +25,7 @@
         <kumuluzee-openapi-mp.version>1.4.0</kumuluzee-openapi-mp.version>
         <kumuluzee-cors.version>1.0.6</kumuluzee-cors.version>
         <kumuluzee-health.version>2.3.0</kumuluzee-health.version>
-        <kumuluzee-streaming.version>1.2.1</kumuluzee-streaming.version>
+        <kumuluzee-streaming.version>1.2.0</kumuluzee-streaming.version>
 
         <keycloak.version>11.0.0</keycloak.version>
 
