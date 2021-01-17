@@ -2,9 +2,11 @@ package codes.mydna.clients.grpc;
 
 import codes.mydna.auth.common.models.User;
 import codes.mydna.lib.Enzyme;
+import codes.mydna.lib.enums.Status;
 import codes.mydna.lib.grpc.EnzymeServiceGrpc;
 import codes.mydna.lib.grpc.EnzymeServiceProto;
 import codes.mydna.lib.grpc.mappers.GrpcEnzymeMapper;
+import codes.mydna.lib.grpc.mappers.GrpcUserMapper;
 import com.kumuluz.ee.grpc.client.GrpcChannelConfig;
 import com.kumuluz.ee.grpc.client.GrpcChannels;
 import com.kumuluz.ee.grpc.client.GrpcClient;
@@ -50,6 +52,7 @@ public class EnzymeServiceGrpcClient {
 
         EnzymeServiceProto.MultipleEnzymesRequest request = EnzymeServiceProto.MultipleEnzymesRequest.newBuilder()
                 .addAllId(ids)
+                .setUser(GrpcUserMapper.toGrpcUser(user))
                 .build();
 
         try {
@@ -62,6 +65,7 @@ public class EnzymeServiceGrpcClient {
 
         }catch (Exception e) {
 
+            LOG.severe(EnzymeServiceGrpcClient.class.getSimpleName() + ": INTERNAL SERVER ERROR");
             LOG.severe("Failed to connect to gRPC client: " + e.getMessage());
             return new ArrayList<>();
         }

@@ -6,6 +6,7 @@ import codes.mydna.clients.grpc.DnaServiceGrpcClient;
 import codes.mydna.clients.grpc.EnzymeServiceGrpcClient;
 import codes.mydna.clients.grpc.GeneServiceGrpcClient;
 import codes.mydna.clients.grpc.models.CheckedEntity;
+import codes.mydna.clients.kafka.KafkaLargeScaleAnalysisClient;
 import codes.mydna.lib.*;
 import codes.mydna.lib.enums.Orientation;
 import codes.mydna.lib.enums.SequenceType;
@@ -43,6 +44,10 @@ public class AnalysisServiceImpl implements AnalysisService {
     @Inject
     private AnalysisResultGrpcClient analysisResultGrpcClient;
 
+    @Inject
+    private KafkaLargeScaleAnalysisClient largeScaleAnalysisClient;
+
+
     @Override
     public AnalysisResult analyze(AnalysisRequest request, User user) {
 
@@ -56,8 +61,14 @@ public class AnalysisServiceImpl implements AnalysisService {
         CheckedEntity<Dna> receivedDna = dnaServiceGrpcClient.getDna(request.getDnaId(), user);
         result.setStatus(receivedDna.getStatus());
 
+
         // Dna sequence response validation
         if (receivedDna.getStatus() != Status.OK) {
+
+            // LARGE_SCALE -> Send request to large scale analysis service
+            if(receivedDna.getStatus() == Status.LARGE_SCALE)
+                largeScaleAnalysisClient.runLargeScaleAnalysis(request, user);
+
             return result;
         }
 

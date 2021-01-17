@@ -44,10 +44,6 @@
             <artifactId>kumuluzee-cors</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.kumuluz.ee.rest</groupId>
-            <artifactId>kumuluzee-rest-core</artifactId>
-        </dependency>
-        <dependency>
             <groupId>com.kumuluz.ee.health</groupId>
             <artifactId>kumuluzee-health</artifactId>
         </dependency>
@@ -66,11 +62,6 @@
         <dependency>
             <groupId>com.kumuluz.ee.graphql</groupId>
             <artifactId>kumuluzee-graphql-ui</artifactId>
-        </dependency>
-        <!-- KumuluzEE (Streaming - Kafka) -->
-        <dependency>
-            <groupId>com.kumuluz.ee.streaming</groupId>
-            <artifactId>kumuluzee-streaming-kafka</artifactId>
         </dependency>
     </dependencies>
 

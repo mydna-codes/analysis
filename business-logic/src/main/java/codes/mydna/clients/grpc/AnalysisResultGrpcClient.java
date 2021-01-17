@@ -1,16 +1,11 @@
 package codes.mydna.clients.grpc;
 
 import codes.mydna.auth.common.models.User;
-import codes.mydna.clients.grpc.models.CheckedEntity;
 import codes.mydna.lib.AnalysisResult;
-import codes.mydna.lib.Dna;
 import codes.mydna.lib.enums.Status;
 import codes.mydna.lib.grpc.AnalysisResultProto;
 import codes.mydna.lib.grpc.AnalysisResultServiceGrpc;
-import codes.mydna.lib.grpc.DnaServiceGrpc;
-import codes.mydna.lib.grpc.DnaServiceProto;
 import codes.mydna.lib.grpc.mappers.GrpcAnalysisResultMapper;
-import codes.mydna.lib.grpc.mappers.GrpcDnaMapper;
 import codes.mydna.lib.grpc.mappers.GrpcUserMapper;
 import com.kumuluz.ee.grpc.client.GrpcChannelConfig;
 import com.kumuluz.ee.grpc.client.GrpcChannels;
@@ -48,6 +43,7 @@ public class AnalysisResultGrpcClient {
 
         AnalysisResultProto.AnalysisResultInsertionRequest request;
         request = AnalysisResultProto.AnalysisResultInsertionRequest.newBuilder()
+                .setServiceType(AnalysisResultProto.AnalysisResultInsertionRequest.ServiceType.NORMAL)
                 .setUser(GrpcUserMapper.toGrpcUser(user))
                 .setAnalysisResult(GrpcAnalysisResultMapper.toGrpcAnalysisResult(result))
                 .build();
@@ -66,6 +62,7 @@ public class AnalysisResultGrpcClient {
             } else if (e.getMessage().equals(io.grpc.Status.PERMISSION_DENIED.getCode().name())) {
                 result.setStatus(Status.UNAUTHORIZED);
             } else {
+                LOG.severe(AnalysisResultGrpcClient.class.getSimpleName() + ": INTERNAL SERVER ERROR");
                 result.setStatus(Status.INTERNAL_SERVER_ERROR);
             }
         }

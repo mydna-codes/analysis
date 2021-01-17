@@ -5,6 +5,7 @@ import codes.mydna.lib.Gene;
 import codes.mydna.lib.grpc.GeneServiceGrpc;
 import codes.mydna.lib.grpc.GeneServiceProto;
 import codes.mydna.lib.grpc.mappers.GrpcGeneMapper;
+import codes.mydna.lib.grpc.mappers.GrpcUserMapper;
 import com.kumuluz.ee.grpc.client.GrpcChannelConfig;
 import com.kumuluz.ee.grpc.client.GrpcChannels;
 import com.kumuluz.ee.grpc.client.GrpcClient;
@@ -50,6 +51,7 @@ public class GeneServiceGrpcClient {
 
         GeneServiceProto.MultipleGenesRequest request = GeneServiceProto.MultipleGenesRequest.newBuilder()
                 .addAllId(ids)
+                .setUser(GrpcUserMapper.toGrpcUser(user))
                 .build();
 
         try {
@@ -62,6 +64,7 @@ public class GeneServiceGrpcClient {
 
         }catch (Exception e) {
 
+            LOG.severe(GeneServiceGrpcClient.class.getSimpleName() + ": INTERNAL SERVER ERROR");
             LOG.severe("Failed to connect to gRPC client: " + e.getMessage());
             return new ArrayList<>();
         }

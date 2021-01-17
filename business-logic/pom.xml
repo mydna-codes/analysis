@@ -24,12 +24,12 @@
             <artifactId>kumuluzee-jax-rs-jersey</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.kumuluz.ee.rest</groupId>
-            <artifactId>kumuluzee-rest-core</artifactId>
-        </dependency>
-        <dependency>
             <groupId>com.kumuluz.ee.rest-client</groupId>
             <artifactId>kumuluzee-rest-client</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.kumuluz.ee.streaming</groupId>
+            <artifactId>kumuluzee-streaming-kafka</artifactId>
         </dependency>
         <dependency>
             <groupId>com.kumuluz.ee</groupId>
@@ -59,6 +59,10 @@
         <dependency>
             <groupId>codes.mydna</groupId>
             <artifactId>analysis-result-lib-v1</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>codes.mydna</groupId>
+            <artifactId>large-scale-analysis-lib</artifactId>
         </dependency>
     </dependencies>
 
