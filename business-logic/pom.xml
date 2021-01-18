@@ -7,7 +7,7 @@
     <parent>
         <groupId>codes.mydna</groupId>
         <artifactId>analysis</artifactId>
-        <version>0.0.1</version>
+        <version>0.1.4</version>
     </parent>
 
     <artifactId>business-logic</artifactId>
@@ -15,15 +15,6 @@
     <name>business-logic</name>
 
     <dependencies>
-        <dependency>
-            <groupId>codes.mydna</groupId>
-            <artifactId>entities</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>codes.mydna</groupId>
-            <artifactId>analysis-lib</artifactId>
-        </dependency>
-
         <dependency>
             <groupId>com.kumuluz.ee</groupId>
             <artifactId>kumuluzee-cdi-weld</artifactId>
@@ -33,12 +24,12 @@
             <artifactId>kumuluzee-jax-rs-jersey</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.kumuluz.ee.rest</groupId>
-            <artifactId>kumuluzee-rest-core</artifactId>
-        </dependency>
-        <dependency>
             <groupId>com.kumuluz.ee.rest-client</groupId>
             <artifactId>kumuluzee-rest-client</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.kumuluz.ee.streaming</groupId>
+            <artifactId>kumuluzee-streaming-kafka</artifactId>
         </dependency>
         <dependency>
             <groupId>com.kumuluz.ee</groupId>
@@ -48,10 +39,30 @@
             <groupId>com.kumuluz.ee</groupId>
             <artifactId>kumuluzee-json-b-yasson</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.kumuluz.ee.grpc</groupId>
+            <artifactId>kumuluzee-grpc</artifactId>
+        </dependency>
 
         <dependency>
             <groupId>codes.mydna</groupId>
             <artifactId>rest-lib</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>codes.mydna</groupId>
+            <artifactId>auth-keycloak</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>codes.mydna</groupId>
+            <artifactId>sequence-bank-lib-v1</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>codes.mydna</groupId>
+            <artifactId>analysis-result-lib-v1</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>codes.mydna</groupId>
+            <artifactId>large-scale-analysis-lib</artifactId>
         </dependency>
     </dependencies>
 

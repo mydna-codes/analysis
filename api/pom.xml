@@ -6,7 +6,7 @@
     <parent>
         <groupId>codes.mydna</groupId>
         <artifactId>analysis</artifactId>
-        <version>0.0.1</version>
+        <version>0.1.4</version>
     </parent>
 
     <artifactId>api</artifactId>
@@ -19,6 +19,10 @@
             <artifactId>business-logic</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>com.kumuluz.ee.config</groupId>
+            <artifactId>kumuluzee-config-mp</artifactId>
+        </dependency>
         <dependency>
             <groupId>com.kumuluz.ee</groupId>
             <artifactId>kumuluzee-core</artifactId>
@@ -40,24 +44,24 @@
             <artifactId>kumuluzee-cors</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.kumuluz.ee.rest</groupId>
-            <artifactId>kumuluzee-rest-core</artifactId>
-        </dependency>
-        <dependency>
             <groupId>com.kumuluz.ee.health</groupId>
             <artifactId>kumuluzee-health</artifactId>
         </dependency>
         <dependency>
             <groupId>com.kumuluz.ee.openapi</groupId>
-            <artifactId>kumuluzee-openapi</artifactId>
+            <artifactId>kumuluzee-openapi-mp</artifactId>
         </dependency>
         <dependency>
             <groupId>com.kumuluz.ee.openapi</groupId>
-            <artifactId>kumuluzee-openapi-ui</artifactId>
+            <artifactId>kumuluzee-openapi-mp-ui</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.kumuluz.ee.migrations</groupId>
-            <artifactId>kumuluzee-migrations-liquibase</artifactId>
+            <groupId>com.kumuluz.ee.graphql</groupId>
+            <artifactId>kumuluzee-graphql</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.kumuluz.ee.graphql</groupId>
+            <artifactId>kumuluzee-graphql-ui</artifactId>
         </dependency>
     </dependencies>
 

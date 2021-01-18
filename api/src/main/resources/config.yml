@@ -4,42 +4,54 @@ kumuluzee:
   env:
     prod: false
     name: dev
+  dev:
+    scan-libraries:
+      - rest-lib
   server:
-    show-server-info: false
     base-url: http://localhost:8080
+    show-server-info: false
+    http:
+      port: 8080
   cors-filter:
     servlet:
       allow-origin: "*"
-      supported-methods: "GET, POST, PUT, PATCH, DELETE, OPTIONS, HEAD"
-      exposed-headers: "X-Total-Count"
-  openapi:
-    enabled: true
+      supported-methods: "GET, POST"
+      exposed-headers: "X-Total-Count, Content-Type"
+  grpc:
+    clients:
+      - name: sequence-bank-grpc-client
+        port: 8081
+        address: localhost
+      - name: analysis-result-grpc-client
+        port: 8082
+        address: localhost
+  graphql:
+    mapping: /graphql
     ui:
+      mapping: /graphiql
       enabled: true
+    schema:
+      base-packages:
+        - codes.mydna.lib
+  streaming:
+    kafka:
+      producer:
+        bootstrap-servers: localhost:9091
+        key-serializer: org.apache.kafka.common.serialization.StringSerializer
+        value-serializer: org.apache.kafka.common.serialization.StringSerializer
   health:
     servlet:
       mapping: /health/
       enabled: true
     checks:
-      data-source-health-check:
-        type: liveness
-        jndi-name: jdbc/analysis-db
-      disk-space-health-check:
-        threshold: 100000000
-        type: liveness
-  datasources:
-    - jndi-name: jdbc/analysis-db
-      connection-url: jdbc:postgresql://localhost:5432/analysis
-      username: postgres
-      password: postgres
-      pool:
-        max-size: 20
-  migrations:
-    enabled: true
-    liquibase:
-      datasources:
-        - jndi-name: jdbc/analysis-db
-          changelog: db/db.changelog-master.xml
-          startup:
-            dropAll: false
-            update: true
+      kafka-health-check:
+        bootstrap-servers: localhost:9091
+        minimum-available-nodes: 1
+        request-timeout-ms: 1000
+
+keycloak:
+  realm: not_set
+  auth-server-url: not_set
+  client-id: not_set
+  auth:
+    client-secret: not_set

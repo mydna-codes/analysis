@@ -1,13 +1,6 @@
 # analysis
 
-### Library
-```xml
-<dependency>
-    <groupId>codes.mydna</groupId>
-    <artifactId>analysis-lib</artifactId>
-    <version>${analysis.version}</version>
-</dependency>
-```
+[![Build Status](https://jenkins.din-cloud.com/buildStatus/icon?job=mydnacodes%2Fanalysis-service%2Fmaster&subject=CI/CD)](https://jenkins.din-cloud.com/job/mydnacodes/job/analysis-service/job/master/)
 
 ### Docker
 
@@ -21,9 +14,14 @@ docker pull mydnacodes/analysis
 Run docker image:
 ```bash
 docker run -d -p <PORT>:8080 
-    -e KUMULUZEE_DATASOURCES0_CONNECTIONURL=jdbc:postgresql://<DB_HOST>:<DB_PORT>/analysis
-    -e KUMULUZEE_DATASOURCES0_USERNAME=<DB_USERNAME> 
-    -e KUMULUZEE_DATASOURCES0_PASSWORD=<DB_PASSWORD> 
+    -e KUMULUZEE_GRPC_CLIENTS0_ADDRESS=<SEQUENCE_BANK_GRPC_CLIENT_URL>
+    -e KUMULUZEE_GRPC_CLIENTS0_PORT=<SEQUENCE_BANK_GRPC_CLIENT_PORT>
+    -e KUMULUZEE_GRPC_CLIENTS2_ADDRESS=<ANALYSIS_REPORT_GRPC_CLIENT_URL>
+    -e KUMULUZEE_GRPC_CLIENTS2_PORT=<ANALYSIS_REPORT_GRPC_CLIENT_PORT>
+    -e KEYCLOAK_REALM=<KEYCLOAK_REALM_NAME>
+    -e KEYCLOAK_CLIENTID=<KEYCLOAK_CLIENT_ID>
+    -e KEYCLOAK_AUTHSERVERURL=<KEYCLOAK_SERVER_URL>
+    -e KEYCLOAK_AUTH_CLIENTSECRET=<KEYCLOAK_CLIENT_SECRET>
     --name analysis-service
     mydnacodes/analysis
 ```
