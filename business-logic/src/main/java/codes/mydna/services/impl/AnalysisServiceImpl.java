@@ -14,6 +14,7 @@ import codes.mydna.lib.enums.Status;
 import codes.mydna.lib.util.BasePairUtil;
 import codes.mydna.services.AnalysisService;
 import codes.mydna.validation.Assert;
+import org.apache.kafka.common.metrics.Stat;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
@@ -90,6 +91,9 @@ public class AnalysisServiceImpl implements AnalysisService {
         // Stop timers
         result.setAnalysisExecutionTime((int) (System.currentTimeMillis() - analysisTimer));
         result.setTotalExecutionTime((int) (System.currentTimeMillis() - totalExecTimer));
+
+        if(result.getStatus() == null)
+            LOG.severe("Status is null");
 
         if(user != null) {
             return analysisResultGrpcClient.insertAnalysisResult(result, user);

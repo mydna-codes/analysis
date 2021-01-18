@@ -30,8 +30,8 @@
         <keycloak.version>11.0.0</keycloak.version>
 
         <!-- mydnacodes -->
-        <mydnacodes-rest-lib.version>1.0.2-SNAPSHOT</mydnacodes-rest-lib.version>
-        <mydnacodes-auth-lib.version>1.0.0-SNAPSHOT</mydnacodes-auth-lib.version>
+        <mydnacodes-rest-lib.version>1.0.2</mydnacodes-rest-lib.version>
+        <mydnacodes-auth-lib.version>1.0.0</mydnacodes-auth-lib.version>
         <mydnacodes-analysis-result-lib.version>1.0.0-SNAPSHOT</mydnacodes-analysis-result-lib.version>
         <mydnacodes-sequence-bank-lib.version>1.0.0-SNAPSHOT</mydnacodes-sequence-bank-lib.version>
         <mydnacodes-large-scale-analysis-lib.version>1.0.0-SNAPSHOT</mydnacodes-large-scale-analysis-lib.version>
