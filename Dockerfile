@@ -15,8 +15,8 @@ ENV KEYCLOAK_AUTH_CLIENTSECRET=not_set
 RUN mkdir /app
 WORKDIR /app
 
-ADD ./api/target/analysis.jar /app
+ADD ./api/target /app
 
 EXPOSE 8080
 
-CMD ["java", "-jar", "analysis.jar", "com.kumuluz.ee.EeApplication"]
+CMD ["java", "-cp", "classes:dependency/*", "com.kumuluz.ee.EeApplication"]
