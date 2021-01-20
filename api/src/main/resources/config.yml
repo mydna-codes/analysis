@@ -32,7 +32,8 @@ kumuluzee:
       enabled: true
     schema:
       base-packages:
-        - codes.mydna.lib
+        - codes.mydna.sequence_bank.lib
+        - codes.mydna.analysis_result.lib
   streaming:
     kafka:
       producer:
