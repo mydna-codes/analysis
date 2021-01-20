@@ -1,8 +1,8 @@
-package codes.mydna.clients.kafka;
+package codes.mydna.analysis.clients.kafka;
 
+import codes.mydna.analysis_result.lib.AnalysisRequest;
 import codes.mydna.auth.common.models.User;
-import codes.mydna.lib.AnalysisRequest;
-import codes.mydna.lib.large_scale.LargeScaleAnalysisRequest;
+import codes.mydna.large_scale_analysis.lib.LargeScaleAnalysisRequest;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kumuluz.ee.streaming.common.annotations.StreamProducer;

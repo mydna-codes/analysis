@@ -1,4 +1,4 @@
-package codes.mydna.api;
+package codes.mydna.analysis.api;
 
 
 import com.kumuluz.ee.graphql.GraphQLApplication;

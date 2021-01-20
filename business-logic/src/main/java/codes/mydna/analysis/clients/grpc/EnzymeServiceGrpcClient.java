@@ -1,11 +1,11 @@
-package codes.mydna.clients.grpc;
+package codes.mydna.analysis.clients.grpc;
 
 import codes.mydna.auth.common.models.User;
-import codes.mydna.lib.Gene;
-import codes.mydna.lib.grpc.GeneServiceGrpc;
-import codes.mydna.lib.grpc.GeneServiceProto;
-import codes.mydna.lib.grpc.mappers.GrpcGeneMapper;
-import codes.mydna.lib.grpc.mappers.GrpcUserMapper;
+import codes.mydna.sequence_bank.lib.Enzyme;
+import codes.mydna.sequence_bank.lib.grpc.EnzymeServiceGrpc;
+import codes.mydna.sequence_bank.lib.grpc.EnzymeServiceProto;
+import codes.mydna.sequence_bank.lib.grpc.mappers.GrpcEnzymeMapper;
+import codes.mydna.sequence_bank.lib.grpc.mappers.GrpcUserMapper;
 import com.kumuluz.ee.grpc.client.GrpcChannelConfig;
 import com.kumuluz.ee.grpc.client.GrpcChannels;
 import com.kumuluz.ee.grpc.client.GrpcClient;
@@ -20,11 +20,11 @@ import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 @ApplicationScoped
-public class GeneServiceGrpcClient {
+public class EnzymeServiceGrpcClient {
 
-    private final static Logger LOG = Logger.getLogger(GeneServiceGrpcClient.class.getName());
+    private final static Logger LOG = Logger.getLogger(EnzymeServiceGrpcClient.class.getName());
 
-    private GeneServiceGrpc.GeneServiceBlockingStub geneServiceBlockingStub;
+    private EnzymeServiceGrpc.EnzymeServiceBlockingStub enzymeServiceBlockingStub;
 
     @PostConstruct
     public void init(){
@@ -33,43 +33,41 @@ public class GeneServiceGrpcClient {
             GrpcChannelConfig config = clientPool.getGrpcClientConfig("sequence-bank-grpc-client");
             GrpcClient client = new GrpcClient(config);
 
-            geneServiceBlockingStub = GeneServiceGrpc.newBlockingStub(client.getChannel()).withWaitForReady();
+            enzymeServiceBlockingStub = EnzymeServiceGrpc.newBlockingStub(client.getChannel()).withWaitForReady();
 
-            LOG.info("Grpc client " + GeneServiceGrpcClient.class.getSimpleName() + " initialized.");
+            LOG.info("Grpc client " + EnzymeServiceGrpcClient.class.getSimpleName() + " initialized.");
 
         } catch (SSLException e) {
             LOG.warning(e.getMessage());
         }
     }
 
-    public List<Gene> getMultipleGenes(List<String> ids, User user){
+    public List<Enzyme> getMultipleEnzymes(List<String> ids, User user){
 
         // If ids are not passed, don't call grpc and return empty list
         if(ids == null || ids.isEmpty()){
             return new ArrayList<>();
         }
 
-        GeneServiceProto.MultipleGenesRequest request = GeneServiceProto.MultipleGenesRequest.newBuilder()
+        EnzymeServiceProto.MultipleEnzymesRequest request = EnzymeServiceProto.MultipleEnzymesRequest.newBuilder()
                 .addAllId(ids)
                 .setUser(GrpcUserMapper.toGrpcUser(user))
                 .build();
 
         try {
-            return geneServiceBlockingStub.getMultipleGenes(request)
-                    .getGeneList()
+            return enzymeServiceBlockingStub.getMultipleEnzymes(request)
+                    .getEnzymeList()
                     .stream()
-                    .map(GrpcGeneMapper::fromGrpcGene)
+                    .map(GrpcEnzymeMapper::fromGrpcEnzyme)
                     .filter(Objects::nonNull)
                     .collect(Collectors.toList());
 
         }catch (Exception e) {
 
-            LOG.severe(GeneServiceGrpcClient.class.getSimpleName() + ": INTERNAL SERVER ERROR");
+            LOG.severe(EnzymeServiceGrpcClient.class.getSimpleName() + ": INTERNAL SERVER ERROR");
             LOG.severe("Failed to connect to gRPC client: " + e.getMessage());
             return new ArrayList<>();
         }
-
-
     }
 
 }

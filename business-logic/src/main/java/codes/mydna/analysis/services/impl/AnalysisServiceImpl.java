@@ -1,20 +1,22 @@
-package codes.mydna.services.impl;
+package codes.mydna.analysis.services.impl;
 
+import codes.mydna.analysis.clients.grpc.AnalysisResultGrpcClient;
+import codes.mydna.analysis.clients.grpc.DnaServiceGrpcClient;
+import codes.mydna.analysis.services.AnalysisService;
+import codes.mydna.analysis_result.lib.*;
+import codes.mydna.analysis_result.lib.enums.Orientation;
+import codes.mydna.analysis_result.lib.enums.Status;
 import codes.mydna.auth.common.models.User;
-import codes.mydna.clients.grpc.AnalysisResultGrpcClient;
-import codes.mydna.clients.grpc.DnaServiceGrpcClient;
-import codes.mydna.clients.grpc.EnzymeServiceGrpcClient;
-import codes.mydna.clients.grpc.GeneServiceGrpcClient;
-import codes.mydna.clients.grpc.models.CheckedEntity;
-import codes.mydna.clients.kafka.KafkaLargeScaleAnalysisClient;
-import codes.mydna.lib.*;
-import codes.mydna.lib.enums.Orientation;
-import codes.mydna.lib.enums.SequenceType;
-import codes.mydna.lib.enums.Status;
-import codes.mydna.lib.util.BasePairUtil;
-import codes.mydna.services.AnalysisService;
-import codes.mydna.validation.Assert;
-import org.apache.kafka.common.metrics.Stat;
+import codes.mydna.analysis.clients.grpc.EnzymeServiceGrpcClient;
+import codes.mydna.analysis.clients.grpc.GeneServiceGrpcClient;
+import codes.mydna.analysis.clients.grpc.models.CheckedEntity;
+import codes.mydna.analysis.clients.kafka.KafkaLargeScaleAnalysisClient;
+import codes.mydna.rest.validation.Assert;
+import codes.mydna.sequence_bank.lib.Dna;
+import codes.mydna.sequence_bank.lib.Enzyme;
+import codes.mydna.sequence_bank.lib.Gene;
+import codes.mydna.sequence_bank.lib.enums.SequenceType;
+import codes.mydna.sequence_bank.lib.util.BasePairUtil;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;

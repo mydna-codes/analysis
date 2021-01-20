@@ -4,19 +4,19 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>codes.mydna</groupId>
+        <groupId>codes.mydna.analysis</groupId>
         <artifactId>analysis</artifactId>
         <version>1.0.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>api</artifactId>
+    <artifactId>analysis-api</artifactId>
 
-    <name>api</name>
+    <name>analysis-api</name>
 
     <dependencies>
         <dependency>
-            <groupId>codes.mydna</groupId>
-            <artifactId>business-logic</artifactId>
+            <groupId>codes.mydna.analysis</groupId>
+            <artifactId>analysis-business-logic</artifactId>
         </dependency>
 
         <dependency>

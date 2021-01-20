@@ -1,10 +1,10 @@
-package codes.mydna.api.resources.graphql;
+package codes.mydna.analysis.api.resources.graphql;
 
 import codes.mydna.auth.common.models.User;
 import codes.mydna.auth.keycloak.KeycloakContext;
-import codes.mydna.lib.AnalysisRequest;
-import codes.mydna.lib.AnalysisResult;
-import codes.mydna.services.AnalysisService;
+import codes.mydna.analysis_result.lib.AnalysisRequest;
+import codes.mydna.analysis_result.lib.AnalysisResult;
+import codes.mydna.analysis.services.AnalysisService;
 import com.kumuluz.ee.graphql.annotations.GraphQLClass;
 import io.leangen.graphql.annotations.GraphQLArgument;
 import io.leangen.graphql.annotations.GraphQLMutation;
